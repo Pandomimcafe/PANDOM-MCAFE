@@ -17,12 +17,24 @@ const notes = [
     "Bugün bir adım at, bir kahve iç 🙂"
 ];
 
+let quoteClicks = 0;
+
 window.onload = () => {
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
-    document.getElementById("quoteBox").textContent = quote;
+    showNewQuote();
     const note = notes[Math.floor(Math.random() * notes.length)];
     document.getElementById("footerNote").textContent = note;
 };
+
+function showNewQuote() {
+    if (quoteClicks >= 2) {
+        document.getElementById("quoteBox").textContent = "3. söz burada yok... Cafe’de dertleşiriz. Bekliyoruz 😊";
+        document.getElementById("moreQuoteBtn").disabled = true;
+        return;
+    }
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById("quoteBox").textContent = quote;
+    quoteClicks++;
+}
 
 const rewards = [
     "Nargile Bedava",
@@ -38,16 +50,22 @@ const rewards = [
 ];
 
 function spinWheel() {
-    const lastSpin = localStorage.getItem("lastSpinDate");
     const now = new Date();
+    const lastSpin = localStorage.getItem("lastSpinDate");
+    const spinCount = parseInt(localStorage.getItem("spinCount")) || 0;
 
     if (lastSpin) {
         const lastDate = new Date(lastSpin);
         const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
-        if (diffDays < 7) {
+        
+        if (diffDays < 7 && spinCount >= 2) {
             document.getElementById("wheelResult").textContent =
-                "Çarkı tekrar çevirebilmek için " + (7 - diffDays) + " gün beklemelisin.";
+                "Bu cihazdaki çark hakkı doldu. 1 hafta sonra tekrar dene 😉";
             return;
+        }
+
+        if (diffDays >= 7) {
+            localStorage.setItem("spinCount", 0);
         }
     }
 
@@ -55,4 +73,5 @@ function spinWheel() {
     document.getElementById("wheelResult").textContent = "Kazandınız: " + result;
 
     localStorage.setItem("lastSpinDate", now.toISOString());
+    localStorage.setItem("spinCount", spinCount + 1);
 }
