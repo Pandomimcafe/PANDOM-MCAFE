@@ -1,19 +1,9 @@
+
 const canvas = document.getElementById("wheelCanvas");
 const ctx = canvas.getContext("2d");
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const rewards = [
-    "Nargile Bedava",
-    "2 Bira + 1 Cips",
-    "Ücretsiz Türk Kahvesi",
-    "Tatlı Alana Çay",
-    "%10 İndirim",
-    "Sıcak Çikolatada %50",
-    "Bugünlük Gülümseme Yeter",
-    "Instagram'da Etiketle",
-    "Hikâyende Paylaş = Kahve",
-    "Şansını Bir Dahaki Sefere Dene"
-];
+const rewards = ['Nargile Bedava', '2 Bira + 1 Cips = 200₺', 'Ücretsiz Türk Kahvesi', 'Tatlı Alana Çay', '%10 İndirim', 'Sıcak Çikolatada %50', '3 Top Dondurma Hediye', "Instagram'da Etiketle", 'Hikâyende Paylaş = Kahve', 'Şansını Bir Dahaki Sefere Dene'];
 
 const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#03a9f4", "#009688", "#4caf50", "#ffeb3b", "#ff9800", "#795548"];
 
@@ -72,7 +62,7 @@ function stopRotateWheel() {
     const degrees = startAngle * 180 / Math.PI + 90;
     const arcd = arc * 180 / Math.PI;
     const index = Math.floor((360 - (degrees % 360)) / arcd);
-    document.getElementById("result").textContent = "Kazandınız: " + rewards[index];
+    document.getElementById("wheelResult").textContent = "Kazandınız: " + rewards[index];
 }
 
 function easeOut(t, b, c, d) {
