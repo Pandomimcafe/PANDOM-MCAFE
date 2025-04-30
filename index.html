@@ -1,26 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farkında Ol, Senden Bir Tane Daha Yok</title>
+    <title>Pandomim Cafe - Şans Çarkı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="logo">
-        <img src="logo.png" alt="Pandomim Cafe Logosu">
+        <img src="logo.png" alt="Pandomim Cafe" width="120">
     </div>
-    <h1>Farkında ol, senden bir tane daha yok.</h1>
-    <div class="quote-box" id="quoteBox">Yükleniyor...</div>
-    <button id="moreQuoteBtn" onclick="showNewQuote()">Bir güzel söz daha</button>
-    <div class="wheel-container">
-        <canvas id="wheelCanvas" width="300" height="300"></canvas>
-        <button onclick="spinWheel()">Şansını Dene</button>
-        <div id="wheelResult"></div>
-    </div>
-    <p id="footerNote">Gününüzü güzelleştirmek için Pandomim Cafe’ye bekleriz ☕</p>
-    <a class="instagram-btn" href="https://www.instagram.com/pandomimcafe" target="_blank">Instagram'da Takip Et</a>
-    <script src="scripts.js"></script>
+    <h1>Şansını Dene!</h1>
+    <canvas id="wheelCanvas" width="400" height="400"></canvas>
+    <button onclick="spin()">Çarkı Çevir</button>
+    <div id="result"></div>
+    <script src="wheel.js"></script>
 </body>
 </html>
