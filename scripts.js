@@ -24,7 +24,6 @@ window.onload = () => {
     document.getElementById("footerNote").textContent = note;
 };
 
-// Simple spin wheel simulation
 const rewards = [
     "Nargile Bedava",
     "2 Bira alana 1 Cips Hediye",
@@ -39,6 +38,21 @@ const rewards = [
 ];
 
 function spinWheel() {
+    const lastSpin = localStorage.getItem("lastSpinDate");
+    const now = new Date();
+
+    if (lastSpin) {
+        const lastDate = new Date(lastSpin);
+        const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+        if (diffDays < 7) {
+            document.getElementById("wheelResult").textContent =
+                "Çarkı tekrar çevirebilmek için " + (7 - diffDays) + " gün beklemelisin.";
+            return;
+        }
+    }
+
     const result = rewards[Math.floor(Math.random() * rewards.length)];
     document.getElementById("wheelResult").textContent = "Kazandınız: " + result;
+
+    localStorage.setItem("lastSpinDate", now.toISOString());
 }
