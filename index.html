@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pandomim Cafe - Şans Çarkı</title>
+  <link rel="icon" href="data:,">
   <style>
     body {
       font-family: sans-serif;
@@ -14,18 +15,42 @@
       width: 100px;
       margin-bottom: 20px;
     }
+    h1 { color: #5d1049; font-size: 1.6rem; margin-bottom: 1rem; }
     canvas {
       border: 4px solid #5d1049;
       border-radius: 50%;
       max-width: 400px;
       width: 100%;
-      margin-top: 20px;
+      margin: 20px auto;
+      display: block;
     }
-    #result {
-      font-size: 1.2rem;
-      margin-top: 20px;
+    .quote-box {
+      background: #fff8e1;
+      border: 1px dashed #ffb300;
+      padding: 1rem;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 0 auto 1rem;
+      font-size: 1.1rem;
+    }
+    .info-box {
+      background: #fff9c4;
+      border: 1px solid #fdd835;
+      border-radius: 8px;
+      padding: 1rem;
+      max-width: 500px;
+      margin: 2rem auto 1rem;
+      font-size: 0.95rem;
+    }
+    .instagram-btn {
+      display:inline-block;
+      margin-top: 10px;
+      padding:10px 20px;
+      background:#e1306c;
+      color:#fff;
+      border-radius:8px;
+      text-decoration:none;
       font-weight: bold;
-      color: #5d1049;
     }
     button {
       padding: 10px 20px;
@@ -33,19 +58,32 @@
       color: white;
       border: none;
       border-radius: 8px;
-      margin-top: 20px;
+      margin: 10px;
       cursor: pointer;
+    }
+    #result {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #5d1049;
     }
   </style>
 </head>
 <body>
-  <div class="logo">
-    <img src="logo.png" alt="Logo">
-  </div>
-  <h1>🎉 Şans Çarkı</h1>
+  <div class="logo"><img src="logo.png" alt="Logo"></div>
+  <h1>✨ Bir gülümseme kadar yakın: Kazanmak!</h1>
+  <div class="quote-box" id="quoteBox">Yükleniyor...</div>
+  <button onclick="showNewQuote()">Bir güzel söz daha</button>
   <canvas id="wheelCanvas" width="400" height="400"></canvas>
   <button onclick="spin()">Çarkı Çevir</button>
   <div id="result"></div>
+  <div class="info-box">
+    🟡 Kazandığın ödülü almak için <strong>@pandomimcafe</strong> hesabını takip et<br>
+    📸 Ekran görüntüsünü DM'den gönder – seni bir sürpriz bekliyor!
+    <br><br>
+    ⏳ Günde en fazla 2 kez çark çevirebilirsin.
+  </div>
+  <a class="instagram-btn" href="https://www.instagram.com/pandomimcafe" target="_blank">Instagram’da Takip Et</a>
 
   <script>
     const canvas = document.getElementById("wheelCanvas");
@@ -55,6 +93,16 @@
     const arc = Math.PI * 2 / rewards.length;
     let startAngle = 0;
     let spinning = false;
+    let quoteClicks = 0;
+    let lastQuote = "";
+
+    const quotes = [
+      "Sen düşündüğünden daha güçlüsün.",
+      "Bugün başlamak için harika bir gün.",
+      "Her şey seninle başlar.",
+      "Hayat senin hikâyen, cesaretle yaz.",
+      "Bir gülümseme her şeyi değiştirebilir."
+    ];
 
     function drawWheel(angle = startAngle) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -103,7 +151,24 @@
       requestAnimationFrame(animate);
     }
 
-    document.addEventListener("DOMContentLoaded", () => drawWheel());
+    function showNewQuote() {
+      if (quoteClicks >= 2) {
+        document.getElementById("quoteBox").textContent = "3. söz burada yok... Cafe’de dertleşiriz. Bekliyoruz 😊";
+        return;
+      }
+      let newQuote;
+      do {
+        newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      } while (newQuote === lastQuote);
+      lastQuote = newQuote;
+      document.getElementById("quoteBox").textContent = newQuote;
+      quoteClicks++;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      drawWheel();
+      showNewQuote();
+    });
   </script>
 </body>
 </html>
