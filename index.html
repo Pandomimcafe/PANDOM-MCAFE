@@ -130,26 +130,29 @@
     let startAngle = 0;
     let spinning = false;
 
-    function drawWheel(rotation = startAngle) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < rewards.length; i++) {
-        const angle = rotation + i * arc;
-        ctx.fillStyle = colors[i % colors.length];
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, 200, angle, angle + arc);
-        ctx.lineTo(centerX, centerY);
-        ctx.fill();
-        ctx.save();
-        ctx.fillStyle = "#fff";
-        ctx.translate(centerX, centerY);
-        ctx.rotate(angle + arc / 2);
-        ctx.textAlign = "right";
-        ctx.font = "bold 14px sans-serif";
-        ctx.fillText(rewards[i], 180, 0);
-        ctx.restore();
-
     
+function drawWheel(rotation = startAngle) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < rewards.length; i++) {
+    const angle = rotation + i * arc;
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, 200, angle, angle + arc);
+    ctx.lineTo(centerX, centerY);
+    ctx.fill();
+
+    ctx.save();
+    ctx.fillStyle = "#fff";
+    ctx.translate(centerX, centerY);
+    ctx.rotate(angle + arc / 2);
+    ctx.textAlign = "right";
+    ctx.font = "bold 14px sans-serif";
+    ctx.fillText(rewards[i], 180, 0);
+    ctx.restore();
+  }
+}
+
 function spin() {
   if (spinning) return;
   spinning = true;
