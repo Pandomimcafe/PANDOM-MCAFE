@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandomim Cafe - Şans Çarkı</title>
+  <link rel="icon" href="data:,">
   <style>
     body {
       font-family: sans-serif;
@@ -12,7 +12,11 @@
       background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
       padding: 2rem;
     }
-    h1 { color: #5d1049; }
+    .logo img {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+    h1 { color: #5d1049; font-size: 1.5rem; }
     .quote-box {
       margin: 20px auto;
       padding: 1rem;
@@ -40,6 +44,14 @@
       border-radius: 8px;
       cursor: pointer;
     }
+    .info-box {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff9c4;
+      border: 1px solid #fdd835;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
     .instagram-btn {
       display:inline-block;
       margin-top:20px;
@@ -48,21 +60,26 @@
       color:#fff;
       border-radius:8px;
       text-decoration:none;
+      font-weight: bold;
     }
-    .info-box {
-      margin-top: 2rem;
-      padding: 1rem;
-      background: #fff9c4;
-      border: 1px solid #fdd835;
-      border-radius: 8px;
+    #wheelResult {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out, transform 0.4s;
+    }
+    #wheelResult.show {
+      opacity: 1;
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
   <div class="logo">
-    <img src="logo.png" alt="Pandomim Cafe Logo" width="120" style="margin-bottom: 20px;">
+    <img src="logo.png" alt="Pandomim Cafe Logo">
   </div>
-  <h1>Farkında ol, senden bir tane daha yok.</h1>
+  <h1>✨ Bir gülümseme kadar yakın: Kazanmak!</h1>
   <div class="quote-box" id="quoteBox">Yükleniyor...</div>
   <button onclick="showNewQuote()">Bir güzel söz daha</button>
   <canvas id="wheelCanvas" width="400" height="400"></canvas>
@@ -70,35 +87,23 @@
   <div id="wheelResult"></div>
   <div class="info-box">
     <strong>🟡 Bilgilendirme:</strong><br>
-    Bu çark sadece 2 kez çevrilebilir.<br>
-    2. hakkı kullanırsan, ilk hakkın da harcanmış olur.<br><br>
-    📸 Ekran görüntüsü al, <strong>@pandomimcafe</strong> hesabını takip et ve DM'den gönder.<br>
-    🎁 Seni sürpriz bir ikram bekliyor!
+    Kazandığın ödülü almak için <strong>@pandomimcafe</strong> hesabını takip et<br>
+    ve ekran görüntüsünü DM’den gönder! 🎁<br><br>
+    ⏳ Sadece 2 kez çevirme hakkın var, 2. hakkı kullandığında ilk hakkın da silinir.
   </div>
-  <a class="instagram-btn" href="https://www.instagram.com/pandomimcafe" target="_blank">Instagram'da Takip Et</a>
-
+  <a class="instagram-btn" href="https://www.instagram.com/pandomimcafe" target="_blank">Instagram’da Takip Et</a>
   <script>
     const quotes = [
       "Sen düşündüğünden daha güçlüsün.",
       "Bugün başlamak için harika bir gün.",
       "Her şey seninle başlar.",
       "Hayat senin hikâyen, cesaretle yaz.",
-      "Kendine inandığın sürece imkânsız yok.",
-      "Bir gülümseme her şeyi değiştirebilir.",
-      "Sen bu dünyanın bir armağanısın."
+      "Bir gülümseme her şeyi değiştirebilir."
     ];
     const rewards = [
-      "Nargile Bedava", "2 Bira + 1 Cips = 200₺", "Ücretsiz Türk Kahvesi",
-      "Tatlı Alana Çay", "%10 İndirim", "Sıcak Çikolatada %50",
-      "3 Top Dondurma Hediye", "Instagram'da Etiketle",
-      "Hikâyende Paylaş = Kahve", "Şansını Bir Dahaki Sefere Dene"
+      "Nargile Bedava", "2 Bira + 1 Cips", "Türk Kahvesi", "Tatlı + Çay", "%10 İndirim",
+      "Sıcak Çikolata %50", "3 Top Dondurma", "Instagram’da Etiketle", "Hikâyende Paylaş = Kahve", "Şansını Bir Daha Dene"
     ];
-    const consolation = [
-      "Şansını bir dahaki sefere dene",
-      "Bugünlük enerjin tükenmiş",
-      "Pandomim seni özledi ama ödül yok 😅"
-    ];
-    const realPrizes = rewards.slice(0, 9);
     let quoteClicks = 0;
     let lastQuote = "";
 
@@ -125,96 +130,50 @@
     let startAngle = 0;
     let spinning = false;
 
-    
-function drawWheel(rotation = startAngle) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < rewards.length; i++) {
-    const angle = rotation + i * arc;
-    ctx.fillStyle = colors[i % colors.length];
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, 200, angle, angle + arc);
-    ctx.lineTo(centerX, centerY);
-    ctx.fill();
+    function drawWheel(rotation = startAngle) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < rewards.length; i++) {
+        const angle = rotation + i * arc;
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, 200, angle, angle + arc);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+        ctx.save();
+        ctx.fillStyle = "#fff";
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = "right";
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText(rewards[i], 180, 0);
+        ctx.restore();
 
-    ctx.save();
-    ctx.fillStyle = "#fff";
-    ctx.translate(centerX, centerY);
-    ctx.rotate(angle + arc / 2);
-    ctx.textAlign = "right";
-    ctx.font = "bold 14px sans-serif";
-    ctx.fillText(rewards[i], 180, 0);
-    ctx.restore();
-  }
-}
-    }
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      let spinAngle = Math.random() * Math.PI * 4 + Math.PI * 10;
+      let duration = 3000;
+      let start = null;
+      let currentAngle = 0;
 
-    
-function spin() {
-  if (spinning) return;
-  spinning = true;
-
-  let spinAngle = Math.random() * Math.PI * 4 + Math.PI * 10;
-  let duration = 3000;
-  let start = null;
-  let currentAngle = 0;
-
-  const now = new Date();
-  const lastUse = localStorage.getItem("pandomim_son_kullanim");
-  if (lastUse && (now - new Date(lastUse)) < 7 * 24 * 60 * 60 * 1000) {
-    const hak = parseInt(localStorage.getItem("pandomim_haklar") || "0");
-    if (hak <= 0) {
-      alert("Tüm haklarınız doldu. 1 hafta sonra tekrar deneyin.");
-      spinning = false;
-      return;
-    }
-  }
-
-  let hak = parseInt(localStorage.getItem("pandomim_haklar") || "2");
-  if (hak <= 0) {
-    alert("Tüm haklarınız doldu.");
-    spinning = false;
-    return;
-  }
-
-  function animate(timestamp) {
-    if (!start) start = timestamp;
-    const progress = timestamp - start;
-    const eased = easeOut(progress / duration);
-    currentAngle = eased * spinAngle;
-    drawWheel(startAngle + currentAngle);
-    if (progress < duration) {
-      requestAnimationFrame(animate);
-    } else {
-      spinning = false;
-      startAngle += currentAngle;
-      const index = Math.floor((rewards.length - (startAngle % (2 * Math.PI)) / arc) % rewards.length);
-      let prize = (hak === 2)
-        ? rewards[index]
-        : (Math.random() < 0.65
-          ? consolation[Math.floor(Math.random() * consolation.length)]
-          : realPrizes[Math.floor(Math.random() * realPrizes.length)]);
-
-      document.getElementById("wheelResult").textContent = "Kazandınız: " + prize;
-      localStorage.setItem("pandomim_haklar", (hak - 1).toString());
-      if (hak === 1) localStorage.setItem("pandomim_son_kullanim", now.toString());
-    }
-  }
-
-  requestAnimationFrame(animate);
-}
- else {
+      function animate(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const eased = easeOut(progress / duration);
+        currentAngle = eased * spinAngle;
+        drawWheel(startAngle + currentAngle);
+        if (progress < duration) {
+          requestAnimationFrame(animate);
+        } else {
           spinning = false;
+          startAngle += currentAngle;
           const index = Math.floor((rewards.length - (startAngle % (2 * Math.PI)) / arc) % rewards.length);
-          let prize = (hak === 2)
-            ? rewards[index]
-            : (Math.random() < 0.65
-              ? consolation[Math.floor(Math.random() * consolation.length)]
-              : realPrizes[Math.floor(Math.random() * realPrizes.length)]);
-
-          document.getElementById("wheelResult").textContent = "Kazandınız: " + prize;
-          localStorage.setItem("pandomim_haklar", (hak - 1).toString());
-          if (hak === 1) localStorage.setItem("pandomim_son_kullanim", now.toString());
+          const resultEl = document.getElementById("wheelResult");
+          resultEl.textContent = "🎁 Sürpriz hediyeni al: " + rewards[index];
+          resultEl.classList.remove("show");
+          void resultEl.offsetWidth;
+          resultEl.classList.add("show");
         }
       }
 
@@ -225,11 +184,10 @@ function spin() {
       return 1 - Math.pow(1 - t, 3);
     }
 
-    drawWheel();
-    window.onload = showNewQuote;
-    if (!localStorage.getItem("pandomim_haklar")) {
-      localStorage.setItem("pandomim_haklar", "2");
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      drawWheel();
+      showNewQuote();
+    });
   </script>
 </body>
 </html>
