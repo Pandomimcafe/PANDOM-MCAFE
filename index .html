@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -75,5 +76,138 @@
     🎁 Seni sürpriz bir ikram bekliyor!
   </div>
   <a class="instagram-btn" href="https://www.instagram.com/pandomimcafe" target="_blank">Instagram'da Takip Et</a>
+
+  <script>
+    const quotes = [
+      "Sen düşündüğünden daha güçlüsün.",
+      "Bugün başlamak için harika bir gün.",
+      "Her şey seninle başlar.",
+      "Hayat senin hikâyen, cesaretle yaz.",
+      "Kendine inandığın sürece imkânsız yok.",
+      "Bir gülümseme her şeyi değiştirebilir.",
+      "Sen bu dünyanın bir armağanısın."
+    ];
+    const rewards = [
+      "Nargile Bedava", "2 Bira + 1 Cips = 200₺", "Ücretsiz Türk Kahvesi",
+      "Tatlı Alana Çay", "%10 İndirim", "Sıcak Çikolatada %50",
+      "3 Top Dondurma Hediye", "Instagram'da Etiketle",
+      "Hikâyende Paylaş = Kahve", "Şansını Bir Dahaki Sefere Dene"
+    ];
+    const consolation = [
+      "Şansını bir dahaki sefere dene",
+      "Bugünlük enerjin tükenmiş",
+      "Pandomim seni özledi ama ödül yok 😅"
+    ];
+    const realPrizes = rewards.slice(0, 9);
+    let quoteClicks = 0;
+    let lastQuote = "";
+
+    function showNewQuote() {
+      if (quoteClicks >= 2) {
+        document.getElementById("quoteBox").textContent = "3. söz burada yok... Cafe’de dertleşiriz. Bekliyoruz 😊";
+        return;
+      }
+      let newQuote;
+      do {
+        newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      } while (newQuote === lastQuote);
+      lastQuote = newQuote;
+      document.getElementById("quoteBox").textContent = newQuote;
+      quoteClicks++;
+    }
+
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const colors = ["#f44336", "#e91e63", "#9c27b0", "#3f51b5", "#03a9f4", "#009688", "#4caf50", "#ffeb3b", "#ff9800", "#795548"];
+    const arc = Math.PI * 2 / rewards.length;
+    let startAngle = 0;
+    let spinning = false;
+
+    function drawWheel() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < rewards.length; i++) {
+        const angle = startAngle + i * arc;
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, 200, angle, angle + arc);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        ctx.save();
+        ctx.fillStyle = "#fff";
+        ctx.translate(centerX, centerY);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = "right";
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText(rewards[i], 180, 0);
+        ctx.restore();
+      }
+    }
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+
+      let spinAngle = Math.random() * Math.PI * 4 + Math.PI * 10;
+      let duration = 3000;
+      let start = null;
+
+      const now = new Date();
+      const lastUse = localStorage.getItem("pandomim_son_kullanim");
+      if (lastUse && (now - new Date(lastUse)) < 7 * 24 * 60 * 60 * 1000) {
+        const hak = parseInt(localStorage.getItem("pandomim_haklar") || "0");
+        if (hak <= 0) {
+          alert("Tüm haklarınız doldu. 1 hafta sonra tekrar deneyin.");
+          spinning = false;
+          return;
+        }
+      }
+
+      let hak = parseInt(localStorage.getItem("pandomim_haklar") || "2");
+      if (hak <= 0) {
+        alert("Tüm haklarınız doldu.");
+        spinning = false;
+        return;
+      }
+
+      function animate(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const eased = easeOut(progress / duration);
+        startAngle += eased * spinAngle;
+        drawWheel();
+        if (progress < duration) {
+          requestAnimationFrame(animate);
+        } else {
+          spinning = false;
+          const index = Math.floor((rewards.length - (startAngle % (2 * Math.PI)) / arc) % rewards.length);
+          let prize = (hak === 2)
+            ? rewards[index]
+            : (Math.random() < 0.65
+              ? consolation[Math.floor(Math.random() * consolation.length)]
+              : realPrizes[Math.floor(Math.random() * realPrizes.length)]);
+
+          document.getElementById("wheelResult").textContent = "Kazandınız: " + prize;
+          localStorage.setItem("pandomim_haklar", (hak - 1).toString());
+          if (hak === 1) localStorage.setItem("pandomim_son_kullanim", now.toString());
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function easeOut(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    drawWheel();
+    window.onload = showNewQuote;
+    if (!localStorage.getItem("pandomim_haklar")) {
+      localStorage.setItem("pandomim_haklar", "2");
+    }
+  </script>
 </body>
 </html>
