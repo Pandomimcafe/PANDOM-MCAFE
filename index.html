@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandomim Ödül Çarký</title>
+  <style>
+    /* SAYFA GENELÝ */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    /* ÇARK */
+    .wheel {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border: 10px solid #000;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: transform 6s ease-out;
+      margin: 40px 0;
+    }
+
+    /* DÝLÝMLER */
+    .sector {
+      --rot: calc(var(--i) * 36deg);
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform-origin: 100% 100%;
+      transform: rotate(var(--rot));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sector:nth-child(odd)  { background: #000; }
+    .sector:nth-child(even) { background: #eee; }
+
+    /* DÝLÝM YAZILARI */
+    .sector span {
+      transform: rotate(calc(-1 * var(--rot)));
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      width: 80px;
+      display: block;
+    }
+    .sector:nth-child(odd)  span { color: #fff; }
+    .sector:nth-child(even) span { color: #000; }
+
+    /* LOGO ÝMLEÇ */
+    .logo-pointer {
+      width: 80px;
+      height: 80px;
+      margin-bottom: -50px;
+      transform: rotate(180deg);
+    }
+
+    /* DÜÐMELER */
+    button {
+      margin: 20px 0;
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* ALTYAZI */
+    p.info {
+      font-size: 14px;
+      color: #444;
+      margin-top: 30px;
+      max-width: 320px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGO ÝMLEÇ -->
+  <img src="logo_resized.png" class="logo-pointer" alt="Pandomim Logo">
+
+  <!-- ÖDÜL ÇARKI -->
+  <div class="wheel" id="wheel">
+    <div class="sector" style="--i:0;"><span>Tatlý + Türk Kahvesi</span></div>
+    <div class="sector" style="--i:1;"><span>2 Adet Soðuk Ýçecek</span></div>
+    <div class="sector" style="--i:2;"><span>Nargile Bedava</span></div>
+    <div class="sector" style="--i:3;"><span>2 Bira + 1 Cips</span></div>
+    <div class="sector" style="--i:4;"><span>%20 Ýndirim</span></div>
+    <div class="sector" style="--i:5;"><span>Milkshake / Soðuk Kahve</span></div>
+    <div class="sector" style="--i:6;"><span>Þansýný Bir Daha Dene</span></div>
+    <div class="sector" style="--i:7;"><span>3 Top Dondurma</span></div>
+    <div class="sector" style="--i:8;"><span>Boþ Dilim ??</span></div>
+    <div class="sector" style="--i:9;"><span>%10 Ýndirim</span></div>
+  </div>
+
+  <!-- ÇEVÝR DÜÐMESÝ -->
+  <button onclick="spin()">Çevir!</button>
+
+  <!-- MOTÝVASYON -->
+  <p id="motivasyon" style="margin-top:20px; font-weight:bold; font-size:15px; color:#222;">
+    "Bugün harika bir gün olabilir, yeter ki sen iste."
+  </p>
+  <button onclick="yeniMotivasyon()" style="background:#444;">Bir tane daha!</button>
+
+  <!-- BÝLGÝLENDÝRME -->
+  <p class="info">
+    Tüm ödüller için <strong>Instagram hesabýmýzý takip edin</strong> ve
+    <strong>DM'den ekran görüntüsü gönderin</strong>.<br>
+    Her cihaz yalnýzca <strong>haftada 2 kez</strong> çark çevirebilir.
+  </p>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    let deg = 0;
+    const maxSpins = 2, weekMs = 7*24*60*60*1000;
+    const prizes = [
+      "Tatlý + Türk Kahvesi","2 Adet Soðuk Ýçecek","Nargile Bedava",
+      "2 Bira + 1 Cips","%20 Ýndirim","Milkshake / Soðuk Kahve",
+      "Þansýný Bir Daha Dene","3 Top Dondurma","Boþ Dilim ??","%10 Ýndirim"
+    ];
+    const motivasyonlar = [
+      "Bugün harika bir gün olabilir, yeter ki sen iste.",
+      "Þans hazýr olaný sever.",
+      "Küçük bir adým, büyük deðiþimlerin baþlangýcýdýr.",
+      "Pes etme, belki de zafer bir sonraki denemededir.",
+      "Gülümse, çünkü enerjin çevreni etkiler.",
+      "Unutma: En karanlýk an, þafaða en yakýn olandýr."
+    ];
+    let motCount = 0;
+
+    function canSpin() {
+      let c = localStorage.getItem("spinCount"),
+          t = localStorage.getItem("lastSpinTime"),
+          now = Date.now();
+      if (!t || now - t > weekMs) {
+        localStorage.setItem("spinCount", 0);
+        localStorage.setItem("lastSpinTime", now);
+      }
+      return parseInt(localStorage.getItem("spinCount")) < maxSpins;
+    }
+
+    function recordSpin() {
+      let c = parseInt(localStorage.getItem("spinCount")||"0");
+      localStorage.setItem("spinCount", c+1);
+    }
+
+    function spin() {
+      if (!canSpin()) {
+        alert("Çevirme hakkýnýz doldu. Bir hafta sonra tekrar deneyin.");
+        return;
+      }
+      recordSpin();
+      const wheel = document.getElementById("wheel"),
+            spinNo = parseInt(localStorage.getItem("spinCount")),
+            low = [6,8,9];
+      if (spinNo === 2) {
+        let idx = low[Math.floor(Math.random()*low.length)];
+        deg += 360*4 + (360-(idx*36)-18);
+      } else {
+        deg += 360*(3+Math.floor(Math.random()*3)) + Math.floor(Math.random()*360);
+      }
+      wheel.style.transform = `rotate(${deg}deg)`;
+      setTimeout(()=>{
+        let norm = deg%360, corr = 360-norm,
+            idx = (spinNo===2 ? low[Math.floor(Math.random()*low.length)] : Math.floor(corr/36)%10);
+        alert("Kazandýn: " + prizes[idx]);
+      }, 6200);
+    }
+
+    function yeniMotivasyon() {
+      motCount++;
+      let el = document.getElementById("motivasyon");
+      if (motCount >= 3) {
+        el.innerText = '"Artýk baþka cümle yok... Cafede dertleþiriz ?"';
+        return;
+      }
+      el.innerText = '"' + motivasyonlar[Math.floor(Math.random()*motivasyonlar.length)] + '"';
+    }
+  </script>
+</body>
+</html>
