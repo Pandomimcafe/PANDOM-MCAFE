@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pandomim Ödül Çarkı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pandomim Ã–dÃ¼l Ã‡arkÄ±</title>
   <style>
-    /* SAYFA GENELİ */
+    /* SAYFA DÃœZENÄ° */
     body {
       display: flex;
       justify-content: center;
@@ -17,7 +17,7 @@
       font-family: Arial, sans-serif;
     }
 
-    /* ÇARK */
+    /* Ã‡ARK KUTUSU */
     .wheel {
       position: relative;
       width: 300px;
@@ -29,7 +29,7 @@
       margin: 40px 0;
     }
 
-    /* DİLİMLER */
+    /* Ã‡ARK DÄ°LÄ°MLERÄ° */
     .sector {
       --rot: calc(var(--i) * 36deg);
       position: absolute;
@@ -44,7 +44,7 @@
     .sector:nth-child(odd)  { background: #000; }
     .sector:nth-child(even) { background: #eee; }
 
-    /* DİLİM YAZILARI */
+    /* DÄ°LÄ°M YAZISI */
     .sector span {
       transform: rotate(calc(-1 * var(--rot)));
       font-size: 13px;
@@ -56,7 +56,7 @@
     .sector:nth-child(odd)  span { color: #fff; }
     .sector:nth-child(even) span { color: #000; }
 
-    /* LOGO İMLEÇ */
+    /* LOGO Ä°MLEÃ‡ */
     .logo-pointer {
       width: 80px;
       height: 80px;
@@ -64,7 +64,7 @@
       transform: rotate(180deg);
     }
 
-    /* DÜĞMELER */
+    /* DÃœÄMELER & BÄ°LGÄ° */
     button {
       margin: 20px 0;
       padding: 10px 20px;
@@ -74,8 +74,6 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
-    /* ALTYAZI */
     p.info {
       font-size: 14px;
       color: #444;
@@ -86,58 +84,61 @@
   </style>
 </head>
 <body>
-  <!-- LOGO İMLEÇ -->
+  <!-- LOGO Ä°MLEÃ‡ -->
   <img src="logo_resized.png" class="logo-pointer" alt="Pandomim Logo">
 
-  <!-- ÖDÜL ÇARKI -->
+  <!-- Ã–DÃœL Ã‡ARKI -->
   <div class="wheel" id="wheel">
-    <div class="sector" style="--i:0;"><span>Tatlı + Türk Kahvesi</span></div>
-    <div class="sector" style="--i:1;"><span>2 Adet Soğuk İçecek</span></div>
+    <div class="sector" style="--i:0;"><span>TatlÄ± + TÃ¼rk Kahvesi</span></div>
+    <div class="sector" style="--i:1;"><span>2 Adet SoÄŸuk Ä°Ã§ecek</span></div>
     <div class="sector" style="--i:2;"><span>Nargile Bedava</span></div>
     <div class="sector" style="--i:3;"><span>2 Bira + 1 Cips</span></div>
-    <div class="sector" style="--i:4;"><span>%20 İndirim</span></div>
-    <div class="sector" style="--i:5;"><span>Milkshake / Soğuk Kahve</span></div>
-    <div class="sector" style="--i:6;"><span>Şansını Bir Daha Dene</span></div>
+    <div class="sector" style="--i:4;"><span>%20 Ä°ndirim</span></div>
+    <div class="sector" style="--i:5;"><span>Milkshake / SoÄŸuk Kahve</span></div>
+    <div class="sector" style="--i:6;"><span>ÅansÄ±nÄ± Bir Daha Dene</span></div>
     <div class="sector" style="--i:7;"><span>3 Top Dondurma</span></div>
-    <div class="sector" style="--i:8;"><span>Boş Dilim ??</span></div>
-    <div class="sector" style="--i:9;"><span>%10 İndirim</span></div>
+    <div class="sector" style="--i:8;"><span>BoÅŸ Dilim ğŸ˜„</span></div>
+    <div class="sector" style="--i:9;"><span>%10 Ä°ndirim</span></div>
   </div>
 
-  <!-- ÇEVİR DÜĞMESİ -->
-  <button onclick="spin()">Çevir!</button>
+  <!-- Ã‡EVÄ°R DÃœÄMESÄ° -->
+  <button onclick="spin()">Ã‡evir!</button>
 
-  <!-- MOTİVASYON -->
+  <!-- MOTÄ°VASYON -->
   <p id="motivasyon" style="margin-top:20px; font-weight:bold; font-size:15px; color:#222;">
-    "Bugün harika bir gün olabilir, yeter ki sen iste."
+    "BugÃ¼n harika bir gÃ¼n olabilir, yeter ki sen iste."
   </p>
   <button onclick="yeniMotivasyon()" style="background:#444;">Bir tane daha!</button>
 
-  <!-- BİLGİLENDİRME -->
+  <!-- BÄ°LGÄ°LENDÄ°RME -->
   <p class="info">
-    Tüm ödüller için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>.<br>
-    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+    TÃ¼m Ã¶dÃ¼ller iÃ§in <strong>Instagram hesabÄ±mÄ±zÄ± takip edin</strong> ve
+    <strong>DM'den ekran gÃ¶rÃ¼ntÃ¼sÃ¼ gÃ¶nderin</strong>.<br>
+    Her cihaz yalnÄ±zca <strong>haftada 2 kez</strong> Ã§ark Ã§evirebilir.
   </p>
 
   <!-- JAVASCRIPT -->
   <script>
+    // Temel ayarlar ve veriler
     let deg = 0;
-    const maxSpins = 2, weekMs = 7*24*60*60*1000;
+    const maxSpins = 2,
+          weekMs   = 7*24*60*60*1000;
     const prizes = [
-      "Tatlı + Türk Kahvesi","2 Adet Soğuk İçecek","Nargile Bedava",
-      "2 Bira + 1 Cips","%20 İndirim","Milkshake / Soğuk Kahve",
-      "Şansını Bir Daha Dene","3 Top Dondurma","Boş Dilim ??","%10 İndirim"
+      "TatlÄ± + TÃ¼rk Kahvesi","2 Adet SoÄŸuk Ä°Ã§ecek","Nargile Bedava",
+      "2 Bira + 1 Cips","%20 Ä°ndirim","Milkshake / SoÄŸuk Kahve",
+      "ÅansÄ±nÄ± Bir Daha Dene","3 Top Dondurma","BoÅŸ Dilim ğŸ˜„","%10 Ä°ndirim"
     ];
     const motivasyonlar = [
-      "Bugün harika bir gün olabilir, yeter ki sen iste.",
-      "Şans hazır olanı sever.",
-      "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
+      "BugÃ¼n harika bir gÃ¼n olabilir, yeter ki sen iste.",
+      "Åans hazÄ±r olanÄ± sever.",
+      "KÃ¼Ã§Ã¼k bir adÄ±m, bÃ¼yÃ¼k deÄŸiÅŸimlerin baÅŸlangÄ±cÄ±dÄ±r.",
       "Pes etme, belki de zafer bir sonraki denemededir.",
-      "Gülümse, çünkü enerjin çevreni etkiler.",
-      "Unutma: En karanlık an, şafağa en yakın olandır."
+      "GÃ¼lÃ¼mse, Ã§Ã¼nkÃ¼ enerjin Ã§evreni etkiler.",
+      "Unutma: En karanlÄ±k an, ÅŸafaÄŸa en yakÄ±n olandÄ±r."
     ];
     let motCount = 0;
 
+    // Ã‡evirme hakkÄ± kontrolÃ¼
     function canSpin() {
       let c = localStorage.getItem("spinCount"),
           t = localStorage.getItem("lastSpinTime"),
@@ -148,21 +149,21 @@
       }
       return parseInt(localStorage.getItem("spinCount")) < maxSpins;
     }
-
     function recordSpin() {
       let c = parseInt(localStorage.getItem("spinCount")||"0");
       localStorage.setItem("spinCount", c+1);
     }
 
+    // Ã‡arkÄ± dÃ¶ndÃ¼r
     function spin() {
       if (!canSpin()) {
-        alert("Çevirme hakkınız doldu. Bir hafta sonra tekrar deneyin.");
+        alert("Ã‡evirme hakkÄ±nÄ±z doldu. Bir hafta sonra tekrar deneyin.");
         return;
       }
       recordSpin();
       const wheel = document.getElementById("wheel"),
             spinNo = parseInt(localStorage.getItem("spinCount")),
-            low = [6,8,9];
+            low    = [6,8,9];
       if (spinNo === 2) {
         let idx = low[Math.floor(Math.random()*low.length)];
         deg += 360*4 + (360-(idx*36)-18);
@@ -172,16 +173,19 @@
       wheel.style.transform = `rotate(${deg}deg)`;
       setTimeout(()=>{
         let norm = deg%360, corr = 360-norm,
-            idx = (spinNo===2 ? low[Math.floor(Math.random()*low.length)] : Math.floor(corr/36)%10);
-        alert("Kazandın: " + prizes[idx]);
+            idx  = spinNo===2
+                   ? low[Math.floor(Math.random()*low.length)]
+                   : Math.floor(corr/36)%10;
+        alert("KazandÄ±n: " + prizes[idx]);
       }, 6200);
     }
 
+    // Motive edici cÃ¼mle butonu
     function yeniMotivasyon() {
       motCount++;
       let el = document.getElementById("motivasyon");
       if (motCount >= 3) {
-        el.innerText = '"Artık başka cümle yok... Cafede dertleşiriz ?"';
+        el.innerText = '"ArtÄ±k baÅŸka cÃ¼mle yok... Cafede dertleÅŸiriz â˜•"';
         return;
       }
       el.innerText = '"' + motivasyonlar[Math.floor(Math.random()*motivasyonlar.length)] + '"';
