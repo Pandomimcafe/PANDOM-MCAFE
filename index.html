@@ -54,8 +54,16 @@
       justify-content: center;
       align-items: center;
     }
-    .sector:nth-child(odd)  { background: #000; }
-    .sector:nth-child(even) { background: #eee; }
+    .sector:nth-child(1) { background: #FF5733; }
+    .sector:nth-child(2) { background: #FFC300; }
+    .sector:nth-child(3) { background: #DAF7A6; }
+    .sector:nth-child(4) { background: #C70039; }
+    .sector:nth-child(5) { background: #900C3F; }
+    .sector:nth-child(6) { background: #581845; }
+    .sector:nth-child(7) { background: #33FF57; }
+    .sector:nth-child(8) { background: #33A4FF; }
+    .sector:nth-child(9) { background: #8E44AD; }
+    .sector:nth-child(10) { background: #F39C12; }
     .sector span {
       width: 80px;
       text-align: center;
@@ -64,7 +72,6 @@
       transform: rotate(calc(-1 * var(--deg)));
       color: #fff;
     }
-    .sector:nth-child(even) span { color: #000; }
     .logo-pointer {
       width: 60px;
       margin-bottom: -50px;
@@ -91,26 +98,8 @@
   <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
   <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
 
-  <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
-    <img src="logo_resized.png" alt="Logo Sol" style="height: 60px;" />
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <div class="pointer" style="transform: rotate(0deg);"></div>
-      <div id="wheel" class="wheel">
-        <div class="sector" style="--i:0;"><span>Tatlı + Türk Kahvesi</span></div>
-        <div class="sector" style="--i:1;"><span>2 Adet Soğuk İçecek</span></div>
-        <div class="sector" style="--i:2;"><span>Nargile Bedava</span></div>
-        <div class="sector" style="--i:3;"><span>2 Bira + 1 Cips</span></div>
-        <div class="sector" style="--i:4;"><span>%20 İndirim</span></div>
-        <div class="sector" style="--i:5;"><span>Milkshake / Soğuk Kahve</span></div>
-        <div class="sector" style="--i:6;"><span>Şansını Bir Daha Dene</span></div>
-        <div class="sector" style="--i:7;"><span>3 Top Dondurma</span></div>
-        <div class="sector" style="--i:8;"><span>Boş Dilim 😄</span></div>
-        <div class="sector" style="--i:9;"><span>%10 İndirim</span></div>
-      </div>
-    </div>
-    <img src="logo_resized.png" alt="Logo Sağ" style="height: 60px;" />
-  </div>
-
+  <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer">
+  <div id="wheel" class="wheel"></div>
   <button class="btn" onclick="spin()">Çevir!</button>
 
   <p class="info">
