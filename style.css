@@ -1,37 +1,63 @@
-.wheel {
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+.wheel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+#wheel {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  border: 10px solid #000;
-  overflow: hidden;
+  border: 8px solid black;
   position: relative;
-  transition: transform 7s cubic-bezier(0.17, 0.67, 0.83, 0.67); /* hız yavaşlama efekti */
+  transition: transform 7s cubic-bezier(0.33, 1, 0.68, 1);
+  overflow: hidden;
 }
-
 .sector {
-  --deg: calc(var(--i) * 36deg);
   position: absolute;
   width: 50%;
   height: 50%;
-  transform-origin: 100% 100%;
-  transform: rotate(var(--deg));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--color);
+  left: 50%;
+  top: 0;
+  transform-origin: left bottom;
 }
-
 .sector span {
   display: block;
-  width: 90px;
-  font-size: 14px;
+  transform: skewY(54deg) rotate(-18deg);
+  font-size: 12px;
   font-weight: bold;
   text-align: center;
-  transform: rotate(calc(-1 * var(--deg)));
   color: #fff;
-  line-height: 1.2;
-  padding: 2px;
-  word-break: break-word;
+  padding-top: 10px;
 }
-
-.sector:nth-child(even) span { color: #000; }
+#pointer {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid red;
+  margin: 10px auto;
+}
+.logo-left, .logo-right {
+  width: 80px;
+}
+.btn, .insta-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 10px;
+  display: inline-block;
+}
+.insta-btn {
+  background-color: #E1306C;
+}

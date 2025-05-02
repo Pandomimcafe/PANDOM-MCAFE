@@ -1,193 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pandomim Ödül Çarkı</title>
-  <style>
-    * { box-sizing: border-box; padding: 0; margin: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #fff;
-      padding: 20px;
-    }
-    #motive {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 20px 0;
-      max-width: 400px;
-      margin-inline: auto;
-    }
-    .btn {
-      background: #000;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-    .wheel-container {
-      position: relative;
-      width: 320px;
-      margin: 0 auto;
-    }
-    .wheel {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      border: 10px solid #000;
-      overflow: hidden;
-      position: relative;
-      transition: transform 7s cubic-bezier(0.15, 0.5, 0.2, 1);
-      margin: auto;
-    }
-    .sector {
-      position: absolute;
-      width: 50%; height: 50%;
-      left: 50%; top: 50%;
-      transform-origin: 0% 0%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .sector span {
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      max-width: 70px;
-      color: #fff;
-      transform: rotate(-72deg);
-    }
-    .pointer {
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-bottom: 25px solid red;
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-    }
-    .logo-left, .logo-right {
-      position: absolute;
-      width: 60px;
-      top: 100px;
-    }
-    .logo-left { left: -80px; }
-    .logo-right { right: -80px; }
-    .info {
-      font-size: 14px;
-      margin-top: 30px;
-      max-width: 360px;
-      margin-inline: auto;
-    }
-    .insta-btn {
-      background: #E1306C;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      margin-top: 10px;
-      display: inline-block;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
-  <button class="btn" onclick="yeniMotivasyon()">Bir güzel söze daha ihtiyacım var</button>
+  <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
 
-  <div class="wheel-container">
-    <div class="pointer"></div>
-    <img src="logo_resized.png" class="logo-left" />
-    <img src="logo_resized.png" class="logo-right" />
+  <div class="wheel-wrapper">
+    <img src="assets/logo.png" class="logo-left" alt="Logo">
+    <div id="pointer"></div>
     <div id="wheel" class="wheel"></div>
+    <img src="assets/logo.png" class="logo-right" alt="Logo">
   </div>
 
   <button class="btn" onclick="spin()">Çevir!</button>
 
   <p class="info">
     Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>.<br />
-    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+    <strong>DM'den ekran görüntüsü gönderin</strong>.
   </p>
   <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
 
-  <script>
-    const cark = document.getElementById("wheel");
-    const colors = ["#f44336", "#9c27b0", "#3f51b5", "#03a9f4", "#009688", "#8bc34a", "#ffc107", "#ff5722", "#607d8b", "#e91e63"];
-    const hediyeler = [
-      "Tatlı + Türk Kahvesi", "2 Adet Soğuk İçecek", "Nargile Bedava", "2 Bira + 1 Cips", "%20 İndirim",
-      "Milkshake / Soğuk Kahve", "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
-    ];
-    const total = hediyeler.length;
-    for (let i = 0; i < total; i++) {
-      const sector = document.createElement("div");
-      sector.className = "sector";
-      sector.style.background = colors[i % colors.length];
-      sector.style.transform = `rotate(${i * 36}deg) skewY(-54deg)`;
-      const span = document.createElement("span");
-      span.textContent = hediyeler[i];
-      sector.appendChild(span);
-      cark.appendChild(sector);
-    }
+  <template id="sector-template">
+    <div class="sector"><span></span></div>
+  </template>
 
-    let rotateDeg = 0;
-    let hak = 0;
-    const maxHak = 2;
-    let startTime = localStorage.getItem("startTime");
-    if (!startTime || (Date.now() - parseInt(startTime)) > 7 * 24 * 60 * 60 * 1000) {
-      localStorage.setItem("startTime", Date.now());
-      localStorage.setItem("spinCount", "0");
-    }
-
-    function spin() {
-      let hak = parseInt(localStorage.getItem("spinCount") || "0");
-      if (hak >= maxHak) {
-        alert("Bu cihazda çark haftada 2 kez çevrilebilir.");
-        return;
-      }
-      localStorage.setItem("spinCount", hak + 1);
-
-      const extra = Math.floor(Math.random() * 360);
-      const round = 360 * 5;
-      let secondTry = hak === 1;
-      let hedef = secondTry
-        ? [6, 8, 9][Math.floor(Math.random() * 3)] * 36 + 18
-        : extra;
-
-      rotateDeg += round + (360 - hedef);
-      cark.style.transform = `rotate(${rotateDeg}deg)`;
-
-      setTimeout(() => {
-        const finalDeg = (360 - (rotateDeg % 360)) % 360;
-        const index = Math.floor(finalDeg / 36);
-        alert("Kazandın: " + hediyeler[index]);
-      }, 7000);
-    }
-
-    const motivasyonlar = [
-      "Bugün harika bir gün olabilir, yeter ki sen iste.",
-      "Şans hazır olanı sever.",
-      "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
-      "Pes etme, belki de zafer bir sonraki denemededir.",
-      "Gülümse, çünkü enerjin çevreni etkiler.",
-      "Unutma: En karanlık an, şafağa en yakın olandır."
-    ];
-    let sayac = 0;
-    function yeniMotivasyon() {
-      sayac++;
-      const p = document.getElementById("motive");
-      if (sayac >= 3) {
-        p.textContent = '"Artık başka cümle yok... Cafede dertleşiriz ☕"';
-        return;
-      }
-      const sec = motivasyonlar[Math.floor(Math.random() * motivasyonlar.length)];
-      p.textContent = `"${sec}"`;
-    }
-  </script>
+  <script src="assets/script.js"></script>
 </body>
 </html>
