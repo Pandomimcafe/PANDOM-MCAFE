@@ -37,7 +37,7 @@
     }
     .label {
       transform-origin: bottom right;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
       color: white;
       text-align: center;
@@ -138,12 +138,15 @@
     </div>
     
   </div>
-  <button onclick="spin()">Çevir!</button>
+  <button id="spinBtn" onclick="spin()">Çevir!</button>
 
-  <script>
+  
+<script>
+    let spinning = false;
+
     let deg = 0;
+    let spinCount = 0;
     const maxSpins = 2;
-    const weekMs = 7 * 24 * 60 * 60 * 1000;
     const prizes = [
       "Tatlı + Türk Kahvesi",
       "2 Adet Soğuk İçecek",
@@ -157,32 +160,66 @@
       "%10 İndirim"
     ];
 
-    function canSpin() {
-      let count = localStorage.getItem("spinCount");
-      let lastTime = localStorage.getItem("lastSpinTime");
-      const now = new Date().getTime();
+    
+function spin() {
+  if (spinning) return;
+  if (!canSpin()) {
+    alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin.");
+    return;
+  }
+  recordSpin();
+  spinning = true;
+  document.getElementById("spinBtn").disabled = true;
 
-      if (!lastTime || now - lastTime > weekMs) {
-        localStorage.setItem("spinCount", "0");
-        localStorage.setItem("lastSpinTime", now.toString());
-        count = "0";
+  const totalTime = 6000;
+  const intervalTime = 50;
+  const steps = totalTime / intervalTime;
+  let step = 0;
+  let currentDeg = deg % 360;
+
+  const maxSpinDeg = 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
+  const targetDeg = currentDeg + maxSpinDeg;
+  const incrementBase = maxSpinDeg / steps;
+
+  const spinInterval = setInterval(() => {
+    const progress = step / steps;
+    const easeOutFactor = 1 - Math.pow(1 - progress, 3); // ease-out
+    const nextDeg = currentDeg + (maxSpinDeg * easeOutFactor);
+    document.getElementById("wheel").style.transform = `rotate(${nextDeg}deg)`;
+    step++;
+    if (step >= steps) {
+      clearInterval(spinInterval);
+      deg = targetDeg;
+
+      const normalizedDeg = deg % 360;
+      const correctedDeg = 360 - normalizedDeg;
+      let sectorIndex = Math.floor(correctedDeg / 36) % 10;
+
+      const currentSpinCount = parseInt(localStorage.getItem("spinCount") || "1");
+      let prize;
+      if (currentSpinCount === 2) {
+        const lowTierPrizes = [6, 8, 9];
+        const forcedIndex = lowTierPrizes[Math.floor(Math.random() * lowTierPrizes.length)];
+        sectorIndex = forcedIndex;
+        deg = 360 * Math.floor(deg / 360) + (360 - (forcedIndex * 36) - 18); // hizaya getir
+        document.getElementById("wheel").style.transform = `rotate(${deg}deg)`;
       }
 
-      return parseInt(count) < maxSpins;
+      prize = prizes[sectorIndex];
+      setTimeout(() => {
+        alert("Kazandın: " + prize);
+        spinning = false;
+        document.getElementById("spinBtn").disabled = false;
+      }, 300);
     }
+  }, intervalTime);
+}
 
-    function recordSpin() {
-      let count = parseInt(localStorage.getItem("spinCount") || "0");
-      count++;
-      localStorage.setItem("spinCount", count.toString());
-    }
-
-    function spin() {
-      if (!canSpin()) {
-        alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin.");
+      if (spinCount >= maxSpins) {
+        alert("Çevirme hakkınız doldu.");
         return;
       }
-      recordSpin();
+      spinCount++;
 
       const extraDeg = Math.floor(Math.random() * 360);
       const rotateBy = (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg;
@@ -193,19 +230,7 @@
         const normalizedDeg = deg % 360;
         const correctedDeg = 360 - normalizedDeg;
         const sectorIndex = Math.floor(correctedDeg / 36) % 10;
-        
-    let prize;
-    const currentSpinCount = parseInt(localStorage.getItem("spinCount") || "1");
-
-    if (currentSpinCount === 2) {
-      // Düşük ödüller: "Şansını Bir Daha Dene", "Boş Dilim", "%10 İndirim"
-      const lowTierPrizes = [6, 8, 9];
-      const forcedIndex = lowTierPrizes[Math.floor(Math.random() * lowTierPrizes.length)];
-      prize = prizes[forcedIndex];
-    } else {
-      prize = prizes[sectorIndex];
-    }
-    
+        const prize = prizes[sectorIndex];
         alert("Kazandın: " + prize);
       }, 5200);
     }
