@@ -37,7 +37,7 @@
     }
     .label {
       transform-origin: bottom right;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       color: white;
       text-align: center;
@@ -142,8 +142,8 @@
 
   <script>
     let deg = 0;
-    let spinCount = 0;
     const maxSpins = 2;
+    const weekMs = 7 * 24 * 60 * 60 * 1000;
     const prizes = [
       "Tatlı + Türk Kahvesi",
       "2 Adet Soğuk İçecek",
@@ -157,12 +157,32 @@
       "%10 İndirim"
     ];
 
+    function canSpin() {
+      let count = localStorage.getItem("spinCount");
+      let lastTime = localStorage.getItem("lastSpinTime");
+      const now = new Date().getTime();
+
+      if (!lastTime || now - lastTime > weekMs) {
+        localStorage.setItem("spinCount", "0");
+        localStorage.setItem("lastSpinTime", now.toString());
+        count = "0";
+      }
+
+      return parseInt(count) < maxSpins;
+    }
+
+    function recordSpin() {
+      let count = parseInt(localStorage.getItem("spinCount") || "0");
+      count++;
+      localStorage.setItem("spinCount", count.toString());
+    }
+
     function spin() {
-      if (spinCount >= maxSpins) {
-        alert("Çevirme hakkınız doldu.");
+      if (!canSpin()) {
+        alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin.");
         return;
       }
-      spinCount++;
+      recordSpin();
 
       const extraDeg = Math.floor(Math.random() * 360);
       const rotateBy = (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg;
@@ -173,7 +193,19 @@
         const normalizedDeg = deg % 360;
         const correctedDeg = 360 - normalizedDeg;
         const sectorIndex = Math.floor(correctedDeg / 36) % 10;
-        const prize = prizes[sectorIndex];
+        
+    let prize;
+    const currentSpinCount = parseInt(localStorage.getItem("spinCount") || "1");
+
+    if (currentSpinCount === 2) {
+      // Düşük ödüller: "Şansını Bir Daha Dene", "Boş Dilim", "%10 İndirim"
+      const lowTierPrizes = [6, 8, 9];
+      const forcedIndex = lowTierPrizes[Math.floor(Math.random() * lowTierPrizes.length)];
+      prize = prizes[forcedIndex];
+    } else {
+      prize = prizes[sectorIndex];
+    }
+    
         alert("Kazandın: " + prize);
       }, 5200);
     }
