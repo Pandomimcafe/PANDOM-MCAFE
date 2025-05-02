@@ -1,26 +1,55 @@
-.wheel {
-  width: 300px; height: 300px;
-  border: 10px solid #000;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: transform 6s ease-out;
-}
+<head>
+  …
+  <style>
+    .wheel {
+      width: 300px;
+      height: 300px;
+      border: 10px solid #000;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: transform 6s ease-out;
+      margin: 40px 0;
+    }
+    .sector {
+      --rot: calc(var(--i) * 36deg);
+      position: absolute;
+      width: 50%; height: 50%;
+      transform-origin: 100% 100%;
+      transform: rotate(var(--rot));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Siyah-beyaz arka plan */
+    .sector:nth-child(odd)  { background: #000; }
+    .sector:nth-child(even) { background: #eee; }
+    /* Metni sabitleyelim */
+    .sector span {
+      transform: rotate(calc(-1 * var(--rot)));
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      width: 80px;
+      display: block;
+    }
+    /* Rengi de kontrastlayalım */
+    .sector:nth-child(odd)  span { color: #fff; }
+    .sector:nth-child(even) span { color: #000; }
 
-.sector {
-  --rotation: calc(var(--i) * 36deg);
-  position: absolute;
-  width: 50%; height: 50%;
-  transform-origin: 100% 100%;
-  transform: rotate(var(--rotation));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    /* İmleç ve buton/diğer stiller */
+    .logo-pointer {
+      width: 80px; height: 80px;
+      margin-bottom: -50px;
+      transform: rotate(180deg);
+    }
+    button.spin-btn {
+      margin: 20px 0; padding: 10px 20px;
+      background: #000; color: #fff; border: none; border-radius: 8px;
+    }
+  </style>
+  …
+</head>
 
-.sector:nth-child(odd) { background: #000; }
-.sector:nth-child(even){ background: #eee; }
-
-.sector span {
   transform-origin: center;
   transform: rotate(calc(-1 * var(--rotation)));
   font-size: 13px;
