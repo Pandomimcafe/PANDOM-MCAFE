@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pandomim Kazandıran Sayfa</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,35 +37,35 @@
     .wheel {
       width: 300px;
       height: 300px;
-      border: 8px solid #000;
       border-radius: 50%;
+      border: 8px solid #000;
       overflow: hidden;
-      transition: transform 6s ease-out;
       margin: 20px 0;
       position: relative;
+      transition: transform 6s ease-out;
     }
     .sector {
-      --deg: calc(var(--i) * 36deg);
       position: absolute;
       width: 50%;
       height: 50%;
-      transform-origin: 100% 100%;
-      transform: rotate(var(--deg));
+      left: 50%;
+      top: 50%;
+      transform-origin: 0% 0%;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
+      padding-right: 10px;
     }
-    .sector:nth-child(odd)  { background: #000; }
-    .sector:nth-child(even) { background: #eee; }
     .sector span {
-      width: 80px;
-      text-align: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
       font-size: 13px;
       font-weight: bold;
-      transform: rotate(calc(-1 * var(--deg)));
       color: #fff;
     }
+    .sector:nth-child(even) { background: #eee; }
     .sector:nth-child(even) span { color: #000; }
+    .sector:nth-child(odd) { background: #000; }
     .logo-pointer {
       width: 60px;
       margin-bottom: -50px;
@@ -92,7 +92,7 @@
   <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
   <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
 
-  <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer">
+  <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer" />
   <div id="wheel" class="wheel"></div>
   <button class="btn" onclick="spin()">Çevir!</button>
 
@@ -101,10 +101,6 @@
     <strong>DM'den ekran görüntüsü gönderin</strong>.
   </p>
   <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
-
-  <template id="sector-template">
-    <div class="sector"><span></span></div>
-  </template>
 
   <script>
     const motives = [
@@ -116,7 +112,7 @@
       "Unutma: En karanlık an, şafağa en yakın olandır."
     ];
     let motiveCount = 0;
-    window.newMotive = function () {
+    function newMotive() {
       motiveCount++;
       const el = document.getElementById("motive");
       if (motiveCount > 2) {
@@ -139,17 +135,19 @@
       "%10 İndirim"
     ];
 
-    const wheel = document.getElementById('wheel');
+    const wheel = document.getElementById("wheel");
     prizes.forEach((text, i) => {
-      const tpl = document.getElementById('sector-template').content.cloneNode(true);
-      const sector = tpl.querySelector('.sector');
-      sector.style.setProperty('--i', i);
-      sector.querySelector('span').textContent = text;
+      const sector = document.createElement("div");
+      sector.className = "sector";
+      sector.style.transform = `rotate(${i * 36}deg)`;
+      const span = document.createElement("span");
+      span.textContent = text;
+      sector.appendChild(span);
       wheel.appendChild(sector);
     });
 
     let deg = 0;
-    window.spin = function () {
+    function spin() {
       deg += 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
       wheel.style.transform = `rotate(${deg}deg)`;
       setTimeout(() => {
@@ -159,6 +157,7 @@
         alert("Kazandın: " + prizes[index]);
       }, 6200);
     }
+    window.spin = spin;
   </script>
 </body>
 </html>
