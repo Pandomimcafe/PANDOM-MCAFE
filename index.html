@@ -47,7 +47,8 @@
     .sector {
       --deg: calc(var(--i) * 36deg);
       position: absolute;
-      width: 50%; height: 50%;
+      width: 50%;
+      height: 50%;
       transform-origin: 100% 100%;
       transform: rotate(var(--deg));
       display: flex;
@@ -115,11 +116,11 @@
       "Unutma: En karanlık an, şafağa en yakın olandır."
     ];
     let motiveCount = 0;
-    function newMotive() {
+    window.newMotive = function () {
       motiveCount++;
       const el = document.getElementById("motive");
       if (motiveCount > 2) {
-        el.textContent = ""Artık başka cümle yok... Cafede dertleşiriz ☕"";
+        el.textContent = 'Artık başka cümle yok... Cafede dertleşiriz ☕';
         return;
       }
       el.textContent = '"' + motives[Math.floor(Math.random() * motives.length)] + '"';
@@ -148,7 +149,7 @@
     });
 
     let deg = 0;
-    function spin() {
+    window.spin = function () {
       deg += 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
       wheel.style.transform = `rotate(${deg}deg)`;
       setTimeout(() => {
