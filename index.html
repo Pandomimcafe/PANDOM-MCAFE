@@ -1,79 +1,79 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pandomim Ödül Çarkı</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pandomim Kazandıran Sayfa</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    html, body {
+      height: 100%;
       font-family: Arial, sans-serif;
-      text-align: center;
       background: #fff;
+      color: #222;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 20px;
+      text-align: center;
     }
-    .logo-pointer {
-      width: 50px;
-      margin: 10px auto -30px;
-      transform: rotate(0deg);
+    #motive {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 20px 0;
+      max-width: 300px;
     }
-    .pointer {
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-bottom: 25px solid red;
-      margin: auto;
-      position: relative;
-      z-index: 2;
+    .btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
     }
     .wheel {
       width: 300px;
       height: 300px;
-      border: 10px solid #000;
+      border: 8px solid #000;
       border-radius: 50%;
       overflow: hidden;
-      margin: 20px auto;
-      transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 6s ease-out;
+      margin: 20px 0;
       position: relative;
     }
     .sector {
       --deg: calc(var(--i) * 36deg);
       position: absolute;
-      width: 50%;
-      height: 50%;
-      top: 50%;
-      left: 50%;
-      transform-origin: 0% 0%;
+      width: 50%; height: 50%;
+      transform-origin: 100% 100%;
       transform: rotate(var(--deg));
-      background: var(--color);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
+    .sector:nth-child(odd)  { background: #000; }
+    .sector:nth-child(even) { background: #eee; }
     .sector span {
-      transform: rotate(calc(-1 * var(--deg)));
-      width: 90px;
-      font-size: 12px;
+      width: 80px;
+      text-align: center;
+      font-size: 13px;
       font-weight: bold;
+      transform: rotate(calc(-1 * var(--deg)));
       color: #fff;
+    }
+    .sector:nth-child(even) span { color: #000; }
+    .logo-pointer {
+      width: 60px;
+      margin-bottom: -50px;
+      transform: rotate(180deg);
     }
     .info {
       font-size: 14px;
-      margin-top: 20px;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    button {
-      padding: 10px 20px;
-      background: #000;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 10px;
+      margin-top: 30px;
+      max-width: 320px;
     }
     .insta-btn {
       background: #E1306C;
@@ -82,111 +82,49 @@
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
-      display: inline-block;
       margin-top: 10px;
-    }
-    #motive {
-      font-weight: bold;
-      font-size: 16px;
-      margin: 20px 0;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
-
   <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
-  <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
+  <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
 
-  <img src="logo_resized.png" class="logo-pointer" alt="Logo">
-  <div class="pointer"></div>
-
-  <div id="wheel" class="wheel">
-    <div class="sector" style="--i:0; --color: #f54291;"><span>Tatlı + Türk Kahvesi</span></div>
-    <div class="sector" style="--i:1; --color: #42f5e6;"><span>2 Soğuk İçecek</span></div>
-    <div class="sector" style="--i:2; --color: #f5a142;"><span>Nargile Bedava</span></div>
-    <div class="sector" style="--i:3; --color: #6a42f5;"><span>2 Bira + 1 Cips</span></div>
-    <div class="sector" style="--i:4; --color: #a9f542;"><span>%20 İndirim</span></div>
-    <div class="sector" style="--i:5; --color: #4296f5;"><span>Soğuk Kahve / Milkshake</span></div>
-    <div class="sector" style="--i:6; --color: #f54242;"><span>Şansını Bir Daha Dene</span></div>
-    <div class="sector" style="--i:7; --color: #f5d142;"><span>3 Top Dondurma</span></div>
-    <div class="sector" style="--i:8; --color: #42f57b;"><span>Boş Dilim 😄</span></div>
-    <div class="sector" style="--i:9; --color: #b742f5;"><span>%10 İndirim</span></div>
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+    <img src="logo_resized.png" alt="Logo Sol" style="height: 60px;" />
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="pointer" style="transform: rotate(0deg);"></div>
+      <div id="wheel" class="wheel">
+        <div class="sector" style="--i:0;"><span>Tatlı + Türk Kahvesi</span></div>
+        <div class="sector" style="--i:1;"><span>2 Adet Soğuk İçecek</span></div>
+        <div class="sector" style="--i:2;"><span>Nargile Bedava</span></div>
+        <div class="sector" style="--i:3;"><span>2 Bira + 1 Cips</span></div>
+        <div class="sector" style="--i:4;"><span>%20 İndirim</span></div>
+        <div class="sector" style="--i:5;"><span>Milkshake / Soğuk Kahve</span></div>
+        <div class="sector" style="--i:6;"><span>Şansını Bir Daha Dene</span></div>
+        <div class="sector" style="--i:7;"><span>3 Top Dondurma</span></div>
+        <div class="sector" style="--i:8;"><span>Boş Dilim 😄</span></div>
+        <div class="sector" style="--i:9;"><span>%10 İndirim</span></div>
+      </div>
+    </div>
+    <img src="logo_resized.png" alt="Logo Sağ" style="height: 60px;" />
   </div>
 
-  <button onclick="spin()">Çevir!</button>
+  <button class="btn" onclick="spin()">Çevir!</button>
 
   <p class="info">
     Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+    <strong>DM'den ekran görüntüsü gönderin</strong>.
   </p>
-
   <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
 
+  <template id="sector-template">
+    <div class="sector"><span></span></div>
+  </template>
+
   <script>
-    const wheel = document.getElementById("wheel");
-    const prizes = [
-      "Tatlı + Türk Kahvesi",
-      "2 Soğuk İçecek",
-      "Nargile Bedava",
-      "2 Bira + 1 Cips",
-      "%20 İndirim",
-      "Soğuk Kahve / Milkshake",
-      "Şansını Bir Daha Dene",
-      "3 Top Dondurma",
-      "Boş Dilim 😄",
-      "%10 İndirim"
-    ];
-
-    const weekMs = 7 * 24 * 60 * 60 * 1000;
-    const maxSpins = 2;
-    let deg = 0;
-
-    function canSpin() {
-      const count = parseInt(localStorage.getItem("spinCount") || "0");
-      const last = parseInt(localStorage.getItem("lastSpinTime") || "0");
-      const now = Date.now();
-      if (now - last > weekMs) {
-        localStorage.setItem("spinCount", "0");
-        localStorage.setItem("lastSpinTime", now.toString());
-        return true;
-      }
-      return count < maxSpins;
-    }
-
-    function recordSpin() {
-      let count = parseInt(localStorage.getItem("spinCount") || "0");
-      count++;
-      localStorage.setItem("spinCount", count.toString());
-    }
-
-    function spin() {
-      if (!canSpin()) {
-        alert("Hakkınız doldu! Lütfen 1 hafta sonra tekrar deneyin.");
-        return;
-      }
-
-      const count = parseInt(localStorage.getItem("spinCount") || "0");
-      let index;
-
-      if (count === 1) {
-        const low = [6, 8, 9]; // zayıf ödüller
-        index = low[Math.floor(Math.random() * low.length)];
-      } else {
-        index = Math.floor(Math.random() * 10);
-      }
-
-      recordSpin();
-
-      deg += 360 * 5 + (360 - (index * 36 + 18));
-      wheel.style.transition = "transform 7s cubic-bezier(0.3, 1.5, 0.3, 1)";
-      wheel.style.transform = `rotate(${deg}deg)`;
-
-      setTimeout(() => {
-        alert("Kazandın: " + prizes[index]);
-      }, 7200);
-    }
-
-    const motivasyonlar = [
+    const motives = [
       "Bugün harika bir gün olabilir, yeter ki sen iste.",
       "Şans hazır olanı sever.",
       "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
@@ -194,16 +132,49 @@
       "Gülümse, çünkü enerjin çevreni etkiler.",
       "Unutma: En karanlık an, şafağa en yakın olandır."
     ];
-    let motiveSayaci = 0;
+    let motiveCount = 0;
     function newMotive() {
-      motiveSayaci++;
+      motiveCount++;
       const el = document.getElementById("motive");
-      if (motiveSayaci >= 3) {
-        el.innerText = "Artık başka cümle yok... Cafede dertleşiriz ☕";
+      if (motiveCount > 2) {
+        el.textContent = "\"Artık başka cümle yok... Cafede dertleşiriz ☕\"";
         return;
       }
-      const r = Math.floor(Math.random() * motivasyonlar.length);
-      el.innerText = motivasyonlar[r];
+      el.textContent = '"' + motives[Math.floor(Math.random() * motives.length)] + '"';
+    }
+
+    const prizes = [
+      "Tatlı + Türk Kahvesi",
+      "2 Adet Soğuk İçecek",
+      "Nargile Bedava",
+      "2 Bira + 1 Cips",
+      "%20 İndirim",
+      "Milkshake / Soğuk Kahve",
+      "Şansını Bir Daha Dene",
+      "3 Top Dondurma",
+      "Boş Dilim 😄",
+      "%10 İndirim"
+    ];
+
+    const wheel = document.getElementById('wheel');
+    prizes.forEach((text, i) => {
+      const tpl = document.getElementById('sector-template').content.cloneNode(true);
+      const sector = tpl.querySelector('.sector');
+      sector.style.setProperty('--i', i);
+      sector.querySelector('span').textContent = text;
+      wheel.appendChild(sector);
+    });
+
+    let deg = 0;
+    function spin() {
+      deg += 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${deg}deg)`;
+      setTimeout(() => {
+        const norm = deg % 360;
+        const corrected = 360 - norm;
+        const index = Math.floor(corrected / 36) % 10;
+        alert("Kazandın: " + prizes[index]);
+      }, 6200);
     }
   </script>
 </body>
