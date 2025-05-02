@@ -30,21 +30,22 @@
       height: 50%;
       background: hsl(calc(var(--i) * 36deg), 80%, 60%);
       transform-origin: 100% 100%;
-      transform: rotate(calc(var(--i) * 36deg)) skewY(-60deg);
+      transform: rotate(calc(var(--i) * 36deg)) skewY(-30deg);
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: bold;
       color: white;
       padding: 10px;
     }
     .logo-pointer {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       position: relative;
       top: 10px;
-      margin-bottom: -40px;
+      margin-bottom: -50px;
       transform: rotate(180deg);
     }
     button {
@@ -77,11 +78,40 @@
 
   <script>
     let deg = 0;
+    let spinCount = 0;
+    const maxSpins = 2;
+    const prizes = [
+      "Tatlı + Türk Kahvesi",
+      "2 Adet Soğuk İçecek",
+      "Nargile Bedava",
+      "2 Bira + 1 Cips",
+      "%20 İndirim",
+      "Milkshake / Soğuk Kahve",
+      "Şansını Bir Daha Dene",
+      "3 Top Dondurma",
+      "Boş Dilim 😄",
+      "%10 İndirim"
+    ];
+
     function spin() {
-      const wheel = document.getElementById("wheel");
-      const extraDeg = Math.floor(Math.random() * 360); // rastgele fazladan açı
-      deg += (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg; // 3-5 tur
-      wheel.style.transform = `rotate(${deg}deg)`;
+      if (spinCount >= maxSpins) {
+        alert("Çevirme hakkınız doldu.");
+        return;
+      }
+      spinCount++;
+
+      const extraDeg = Math.floor(Math.random() * 360);
+      const rotateBy = (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg;
+      deg += rotateBy;
+      document.getElementById("wheel").style.transform = `rotate(${deg}deg)`;
+
+      setTimeout(() => {
+        const normalizedDeg = deg % 360;
+        const correctedDeg = 360 - normalizedDeg;
+        const sectorIndex = Math.floor(correctedDeg / 36) % 10;
+        const prize = prizes[sectorIndex];
+        alert("Kazandın: " + prize);
+      }, 5200);
     }
   </script>
 </body>
