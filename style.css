@@ -1,27 +1,38 @@
-body {
-    font-family: sans-serif;
-    text-align: center;
-    background: linear-gradient(135deg, #fdfcfb, #e2d1c3);
-    padding: 2rem;
+.wheel {
+  width: 300px; height: 300px;
+  border: 10px solid #000;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: transform 6s ease-out;
 }
-h1 {
-    color: #5d1049;
+
+.sector {
+  --rotation: calc(var(--i) * 36deg);
+  position: absolute;
+  width: 50%; height: 50%;
+  transform-origin: 100% 100%;
+  transform: rotate(var(--rotation));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-canvas {
-    margin: 2rem auto;
-    display: block;
-    border: 4px solid #5d1049;
-    border-radius: 50%;
+
+.sector:nth-child(odd) { background: #000; }
+.sector:nth-child(even){ background: #eee; }
+
+.sector span {
+  transform-origin: center;
+  transform: rotate(calc(-1 * var(--rotation)));
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  width: 80px;
+  display: block;
 }
-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #5d1049;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
+
+.sector:nth-child(odd) span { color: #fff; }
+.sector:nth-child(even) span{ color: #000; }
+
 #result {
     margin-top: 1rem;
     font-size: 1.2rem;
