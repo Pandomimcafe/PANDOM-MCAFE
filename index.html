@@ -137,5 +137,31 @@
       }, 6200);
     }
   </script>
+
+    <p id="motivasyon" style="margin-top: 20px; font-weight: bold; font-size: 15px; color: #2a2a2a;">
+    "Bugün harika bir gün olabilir, yeter ki sen iste."
+    </p>
+    <button onclick="yeniMotivasyon()" style="margin-top:10px; padding: 6px 12px; font-size: 14px; background-color: #222; color: #fff; border: none; border-radius: 6px;">
+        Bir tane daha!
+    </button>
+    <script>
+    const motivasyonlar = ['Bugün harika bir gün olabilir, yeter ki sen iste.', 'Şans hazır olanı sever.', 'Küçük bir adım, büyük değişimlerin başlangıcıdır.', 'Pes etme, belki de zafer bir sonraki denemededir.', 'Gülümse, çünkü enerjin çevreni etkiler.', 'Unutma: En karanlık an, şafağa en yakın olandır.'];
+    let motivasyonSayaci = 0;
+
+    function yeniMotivasyon() {
+        motivasyonSayaci++;
+        if (motivasyonSayaci >= 3) {
+            document.getElementById("motivasyon").innerText = '"Artık başka cümle yok... Cafede dertleşiriz ☕"';
+            return;
+        }
+        const rastgele = Math.floor(Math.random() * motivasyonlar.length);
+        document.getElementById("motivasyon").innerText = '"' + motivasyonlar[rastgele] + '"';
+    }
+    </script>
+    
+<p style="font-size: 14px; color: #444; margin-top: 40px; max-width: 320px; text-align: center;">
+Tüm ödüller için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>.
+Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+</p>
 </body>
 </html>
