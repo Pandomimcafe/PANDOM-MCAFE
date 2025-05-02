@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandomim Kazandıran Sayfa</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +38,7 @@
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      border: 8px solid #000;
+      border: 10px solid #000;
       overflow: hidden;
       margin: 20px 0;
       position: relative;
@@ -48,27 +48,27 @@
       position: absolute;
       width: 50%;
       height: 50%;
-      left: 50%;
-      top: 50%;
-      transform-origin: 0% 0%;
+      top: 0; left: 50%;
+      transform-origin: 0% 100%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
-      padding-right: 10px;
+      padding-left: 10px;
     }
     .sector span {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       color: #fff;
+      transform: rotate(calc(-1 * var(--angle)));
+      text-align: center;
+      width: 80px;
     }
     .sector:nth-child(even) { background: #eee; }
     .sector:nth-child(even) span { color: #000; }
     .sector:nth-child(odd) { background: #000; }
     .logo-pointer {
       width: 60px;
-      margin-bottom: -50px;
+      margin-bottom: -40px;
       transform: rotate(180deg);
     }
     .info {
@@ -139,7 +139,9 @@
     prizes.forEach((text, i) => {
       const sector = document.createElement("div");
       sector.className = "sector";
-      sector.style.transform = `rotate(${i * 36}deg)`;
+      const angle = i * 36;
+      sector.style.setProperty("--angle", angle + "deg");
+      sector.style.transform = `rotate(${angle}deg)`;
       const span = document.createElement("span");
       span.textContent = text;
       sector.appendChild(span);
