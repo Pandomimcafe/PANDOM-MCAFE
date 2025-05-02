@@ -2,126 +2,115 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pandomim Kazandıran Sayfa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pandomim Kazandıran Çark</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      font-family: Arial, sans-serif;
-      background: #fff;
-      color: #222;
-    }
     body {
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      justify-content: flex-start;
+      height: 100vh;
+      background: #fff;
       text-align: center;
+      padding: 20px;
     }
-    #motive {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 20px 0;
-      max-width: 300px;
+
+    .logo {
+      width: 70px;
+      margin-bottom: 10px;
     }
-    .btn {
-      background: #000;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
+
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid #e74c3c;
+      margin-bottom: -15px;
+      z-index: 10;
     }
+
     .wheel {
       width: 300px;
       height: 300px;
       border-radius: 50%;
       border: 10px solid #000;
+      position: relative;
+      transition: transform 7s cubic-bezier(0.33, 1, 0.68, 1);
       overflow: hidden;
       margin: 20px 0;
-      position: relative;
-      transition: transform 6s ease-out;
     }
+
     .sector {
       position: absolute;
       width: 50%;
       height: 50%;
-      top: 0; left: 50%;
-      transform-origin: 0% 100%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding-left: 10px;
+      justify-content: center;
     }
+
     .sector span {
-      font-size: 12px;
-      font-weight: bold;
-      color: #fff;
       transform: rotate(calc(-1 * var(--angle)));
-      text-align: center;
       width: 80px;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
     }
-    .sector:nth-child(even) { background: #eee; }
-    .sector:nth-child(even) span { color: #000; }
-    .sector:nth-child(odd) { background: #000; }
-    .logo-pointer {
-      width: 60px;
-      margin-bottom: -40px;
-      transform: rotate(180deg);
+
+    .btn {
+      margin: 10px;
+      padding: 10px 20px;
+      background: #000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
+
     .info {
       font-size: 14px;
-      margin-top: 30px;
+      margin-top: 20px;
       max-width: 320px;
+      color: #444;
     }
+
     .insta-btn {
       background: #E1306C;
-      color: #fff;
+      color: white;
       padding: 10px 20px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
       margin-top: 10px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
       display: inline-block;
     }
   </style>
 </head>
 <body>
-  <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
-  <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
 
-  <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer" />
+  <img src="logo_resized.png" class="logo" alt="Pandomim Logo"/>
+  <div class="pointer"></div>
+
   <div id="wheel" class="wheel"></div>
+
   <button class="btn" onclick="spin()">Çevir!</button>
 
   <p class="info">
     Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>.
+    <strong>DM'den ekran görüntüsü gönderin</strong>.<br>
+    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
   </p>
-  <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
+  <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
 
   <script>
-    const motives = [
-      "Bugün harika bir gün olabilir, yeter ki sen iste.",
-      "Şans hazır olanı sever.",
-      "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
-      "Pes etme, belki de zafer bir sonraki denemededir.",
-      "Gülümse, çünkü enerjin çevreni etkiler.",
-      "Unutma: En karanlık an, şafağa en yakın olandır."
-    ];
-    let motiveCount = 0;
-    function newMotive() {
-      motiveCount++;
-      const el = document.getElementById("motive");
-      if (motiveCount > 2) {
-        el.textContent = 'Artık başka cümle yok... Cafede dertleşiriz ☕';
-        return;
-      }
-      el.textContent = '"' + motives[Math.floor(Math.random() * motives.length)] + '"';
-    }
-
     const prizes = [
       "Tatlı + Türk Kahvesi",
       "2 Adet Soğuk İçecek",
@@ -135,31 +124,76 @@
       "%10 İndirim"
     ];
 
+    const colors = [
+      "#e74c3c", "#f1c40f", "#2ecc71", "#3498db", "#9b59b6",
+      "#1abc9c", "#e67e22", "#34495e", "#ff69b4", "#95a5a6"
+    ];
+
     const wheel = document.getElementById("wheel");
+    let deg = 0;
+
     prizes.forEach((text, i) => {
       const sector = document.createElement("div");
       sector.className = "sector";
       const angle = i * 36;
-      sector.style.setProperty("--angle", angle + "deg");
       sector.style.transform = `rotate(${angle}deg)`;
+      sector.style.setProperty("--angle", `${angle}deg`);
+      sector.style.background = colors[i % colors.length];
+
       const span = document.createElement("span");
       span.textContent = text;
       sector.appendChild(span);
       wheel.appendChild(sector);
     });
 
-    let deg = 0;
-    function spin() {
-      deg += 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
-      wheel.style.transform = `rotate(${deg}deg)`;
-      setTimeout(() => {
-        const norm = deg % 360;
-        const corrected = 360 - norm;
-        const index = Math.floor(corrected / 36) % 10;
-        alert("Kazandın: " + prizes[index]);
-      }, 6200);
+    const maxSpins = 2;
+    const weekMs = 7 * 24 * 60 * 60 * 1000;
+
+    function canSpin() {
+      const lastTime = localStorage.getItem("lastSpinTime");
+      const count = parseInt(localStorage.getItem("spinCount") || "0");
+      const now = Date.now();
+      if (!lastTime || now - lastTime > weekMs) {
+        localStorage.setItem("spinCount", "0");
+        localStorage.setItem("lastSpinTime", now.toString());
+        return true;
+      }
+      return count < maxSpins;
     }
-    window.spin = spin;
+
+    function recordSpin() {
+      let count = parseInt(localStorage.getItem("spinCount") || "0");
+      count++;
+      localStorage.setItem("spinCount", count.toString());
+    }
+
+    function spin() {
+      if (!canSpin()) {
+        alert("Çevirme hakkınız doldu. Lütfen bir hafta sonra tekrar deneyin.");
+        return;
+      }
+
+      let count = parseInt(localStorage.getItem("spinCount") || "0");
+      const secondChance = count === 1;
+      recordSpin();
+
+      let index;
+      if (secondChance) {
+        const lowPrizes = [6, 8, 9]; // Şansını Dene, Boş, %10
+        index = lowPrizes[Math.floor(Math.random() * lowPrizes.length)];
+        alert("İlk hakkını bıraktın, bu son şansın!");
+      } else {
+        index = Math.floor(Math.random() * 10);
+      }
+
+      const extraSpins = 4 + Math.floor(Math.random() * 2); // 4-5 tur
+      deg += 360 * extraSpins + (360 - (index * 36) - 18);
+      wheel.style.transform = `rotate(${deg}deg)`;
+
+      setTimeout(() => {
+        alert("Kazandın: " + prizes[index]);
+      }, 7000);
+    }
   </script>
 </body>
 </html>
