@@ -6,174 +6,191 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pandomim Ödül Çarkı</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
     body {
       font-family: Arial, sans-serif;
       background: #fff;
-      color: #222;
       text-align: center;
       padding: 20px;
     }
     #motive {
-      font-size: 18px;
       font-weight: bold;
-      margin: 20px 0;
+      font-size: 16px;
+      margin-bottom: 10px;
     }
     .btn {
       background: #000;
-      color: #fff;
-      border: none;
+      color: white;
       padding: 10px 20px;
-      border-radius: 6px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      margin: 10px;
+      margin-bottom: 10px;
     }
     .wheel-container {
       position: relative;
-      display: inline-block;
-      margin: 30px 0;
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+    }
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 8px solid #000;
+      position: relative;
+      transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .sector {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform-origin: 100% 100%;
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+    .sector span {
+      position: absolute;
+      width: 100px;
+      left: 100%;
+      transform-origin: left center;
+      transform: rotate(calc(-1 * var(--angle)));
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
     }
     .pointer {
       width: 0; 
       height: 0; 
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
-      border-bottom: 25px solid red;
-      position: absolute;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      border-bottom: 20px solid red;
+      margin: 10px auto;
     }
-    .wheel {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      border: 8px solid #000;
-      position: relative;
-      transition: transform 7s cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-    .sector {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      top: 50%;
-      left: 50%;
-      transform-origin: 0% 0%;
-    }
-    .sector span {
-      display: block;
-      transform-origin: center;
-      transform: rotate(18deg);
-      text-align: center;
-      font-weight: bold;
-      font-size: 12px;
-      color: white;
-    }
-    .sector.even span { color: black; }
     .logos {
       display: flex;
       justify-content: space-between;
       align-items: center;
       max-width: 600px;
-      margin: 0 auto;
+      margin: auto;
     }
     .logos img {
-      height: 70px;
+      height: 60px;
     }
     .info {
       margin-top: 30px;
       font-size: 14px;
     }
     .insta-btn {
-      margin-top: 10px;
       background: #E1306C;
       color: white;
-      text-decoration: none;
       padding: 10px 20px;
-      border-radius: 6px;
+      border-radius: 8px;
+      text-decoration: none;
       display: inline-block;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <p id="motive">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
   <button class="btn" onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
-
+  
   <div class="logos">
     <img src="logo.png" alt="Logo">
     <img src="logo.png" alt="Logo">
   </div>
 
+  <div class="pointer"></div>
   <div class="wheel-container">
-    <div class="pointer"></div>
-    <div id="wheel" class="wheel"></div>
+    <div class="wheel" id="wheel"></div>
   </div>
-
   <button class="btn" onclick="spin()">Çevir!</button>
 
   <p class="info">
-    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>.<br/>
+    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
   </p>
-  <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
-
-  <template id="sector-template">
-    <div class="sector"><span></span></div>
-  </template>
+  <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
 
   <script>
     const wheel = document.getElementById("wheel");
-    const prizes = [
-      "Tatlı + Kahve", "Soğuk İçecek", "Nargile", "2 Bira + Cips", "%20 İndirim",
-      "Milkshake", "Şansını Dene", "3 Top Dondurma", "Boş 😄", "%10 İndirim"
+    const sectors = [
+      { color: "#f44336", label: "Tatlı + Türk Kahvesi" },
+      { color: "#e91e63", label: "2 Adet Soğuk İçecek" },
+      { color: "#9c27b0", label: "Nargile Bedava" },
+      { color: "#3f51b5", label: "2 Bira + 1 Cips" },
+      { color: "#2196f3", label: "%20 İndirim" },
+      { color: "#4caf50", label: "Milkshake / Soğuk Kahve" },
+      { color: "#ffeb3b", label: "Şansını Bir Daha Dene" },
+      { color: "#ff9800", label: "3 Top Dondurma" },
+      { color: "#795548", label: "Boş Dilim 😄" },
+      { color: "#607d8b", label: "%10 İndirim" }
     ];
-    const colors = ["#ff4d4d", "#ff944d", "#ffff66", "#66ff66", "#4d94ff", "#b366ff", "#ff66cc", "#00e6e6", "#ffcc66", "#cc99ff"];
 
-    prizes.forEach((text, i) => {
-      const deg = i * 36;
+    sectors.forEach((s, i) => {
+      const angle = i * 36;
       const div = document.createElement("div");
       div.className = "sector";
-      if (i % 2 === 0) div.classList.add("even");
-      div.style.transform = `rotate(${deg}deg)`;
-      div.style.background = colors[i];
-      div.innerHTML = `<span style="transform: rotate(${18 - deg}deg);">${text}</span>`;
+      div.style.transform = `rotate(${angle}deg)`;
+      div.style.setProperty("--angle", `${angle}deg`);
+      div.style.background = s.color;
+      const label = document.createElement("span");
+      label.textContent = s.label;
+      label.style.transform = `rotate(${-angle}deg) translate(10px, -10px)`;
+      div.appendChild(label);
       wheel.appendChild(div);
     });
 
-    let angle = 0;
+    let deg = 0;
     let spinCount = 0;
-    function newMotive() {
-      const motives = [
-        "Bugün harika bir gün olabilir, yeter ki sen iste.",
-        "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
-        "Gülümse, çünkü enerjin çevreni etkiler.",
-        "Unutma: En karanlık an, şafağa en yakın olandır.",
-        "Şans hazır olanı sever."
-      ];
-      const el = document.getElementById("motive");
-      if (++spinCount > 2) {
-        el.textContent = '"Artık başka cümle yok... Cafede dertleşiriz ☕"';
-        return;
-      }
-      el.textContent = '"' + motives[Math.floor(Math.random() * motives.length)] + '"';
-    }
 
     function spin() {
-      const spins = localStorage.getItem("spins") || 0;
-      if (spins >= 2) {
-        alert("Çevirme hakkın doldu.");
+      if (spinCount >= 2) {
+        alert("Çevirme hakkınız doldu!");
         return;
       }
-      const extra = Math.floor(Math.random() * 360);
-      angle += 1440 + extra;
-      wheel.style.transform = `rotate(${angle}deg)`;
+
+      spinCount++;
+      let extraDeg = 0;
+      if (spinCount === 2) {
+        const badIndices = [6, 8, 9];
+        const forced = badIndices[Math.floor(Math.random() * badIndices.length)];
+        extraDeg = 360 - (forced * 36) - 18;
+      } else {
+        extraDeg = Math.floor(Math.random() * 360);
+      }
+
+      deg += 360 * 5 + extraDeg;
+      wheel.style.transform = `rotate(${deg}deg)`;
+
       setTimeout(() => {
-        const norm = angle % 360;
-        const index = Math.floor((360 - norm) / 36) % 10;
-        alert("Kazandın: " + prizes[index]);
+        const normalized = deg % 360;
+        const resultIndex = Math.floor((360 - normalized) / 36) % 10;
+        alert("Kazandın: " + sectors[resultIndex].label);
       }, 7000);
-      localStorage.setItem("spins", +spins + 1);
+    }
+
+    const motivasyonlar = [
+      "Bugün harika bir gün olabilir, yeter ki sen iste.",
+      "Şans hazır olanı sever.",
+      "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
+      "Pes etme, belki de zafer bir sonraki denemededir.",
+      "Gülümse, çünkü enerjin çevreni etkiler.",
+      "Unutma: En karanlık an, şafağa en yakın olandır."
+    ];
+    let motiveCount = 0;
+    function newMotive() {
+      motiveCount++;
+      if (motiveCount > 2) {
+        document.getElementById("motive").textContent = '"Artık başka cümle yok... Cafede dertleşiriz ☕"';
+        return;
+      }
+      const m = motivasyonlar[Math.floor(Math.random() * motivasyonlar.length)];
+      document.getElementById("motive").textContent = `"${m}"`;
     }
   </script>
 </body>
