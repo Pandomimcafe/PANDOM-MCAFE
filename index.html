@@ -32,13 +32,17 @@
       transform-origin: 100% 100%;
       transform: rotate(calc(var(--i) * 36deg)) skewY(-30deg);
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      text-align: center;
-      font-size: 14px;
+    }
+    .label {
+      transform-origin: bottom right;
+      font-size: 13px;
       font-weight: bold;
       color: white;
-      padding: 10px;
+      text-align: center;
+      width: 90px;
+      padding-bottom: 10px;
     }
     .logo-pointer {
       width: 80px;
@@ -63,16 +67,76 @@
 <body>
   <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer">
   <div class="wheel" id="wheel">
-    <div class="sector" style="--i:0;">Tatlı + Türk Kahvesi</div>
-<div class="sector" style="--i:1;">2 Adet Soğuk İçecek</div>
-<div class="sector" style="--i:2;">Nargile Bedava</div>
-<div class="sector" style="--i:3;">2 Bira + 1 Cips</div>
-<div class="sector" style="--i:4;">%20 İndirim</div>
-<div class="sector" style="--i:5;">Milkshake / Soğuk Kahve</div>
-<div class="sector" style="--i:6;">Şansını Bir Daha Dene</div>
-<div class="sector" style="--i:7;">3 Top Dondurma</div>
-<div class="sector" style="--i:8;">Boş Dilim 😄</div>
-<div class="sector" style="--i:9;">%10 İndirim</div>
+    
+    <div class="sector" style="--i:0;">
+        <div class="label" style="transform: rotate(18deg);">
+            Tatlı + Türk Kahvesi
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:1;">
+        <div class="label" style="transform: rotate(-18deg);">
+            2 Adet Soğuk İçecek
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:2;">
+        <div class="label" style="transform: rotate(-54deg);">
+            Nargile Bedava
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:3;">
+        <div class="label" style="transform: rotate(-90deg);">
+            2 Bira + 1 Cips
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:4;">
+        <div class="label" style="transform: rotate(-126deg);">
+            %20 İndirim
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:5;">
+        <div class="label" style="transform: rotate(-162deg);">
+            Milkshake / Soğuk Kahve
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:6;">
+        <div class="label" style="transform: rotate(-198deg);">
+            Şansını Bir Daha Dene
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:7;">
+        <div class="label" style="transform: rotate(-234deg);">
+            3 Top Dondurma
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:8;">
+        <div class="label" style="transform: rotate(-270deg);">
+            Boş Dilim 😄
+        </div>
+    </div>
+    
+
+    <div class="sector" style="--i:9;">
+        <div class="label" style="transform: rotate(-306deg);">
+            %10 İndirim
+        </div>
+    </div>
+    
   </div>
   <button onclick="spin()">Çevir!</button>
 
