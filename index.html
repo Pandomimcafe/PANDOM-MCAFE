@@ -22,7 +22,7 @@
       border-radius: 50%;
       border: 10px solid #333;
       overflow: hidden;
-      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+      transition: transform 6s ease-out;
     }
     .sector {
       position: absolute;
@@ -32,17 +32,16 @@
       transform-origin: 100% 100%;
       transform: rotate(calc(var(--i) * 36deg)) skewY(-30deg);
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
     }
-    .label {
-      transform-origin: bottom right;
-      font-size: 13px;
+    .sector span {
+      transform: skewY(30deg);
+      font-size: 12px;
       font-weight: bold;
       color: white;
       text-align: center;
-      width: 90px;
-      padding-bottom: 10px;
+      width: 80px;
     }
     .logo-pointer {
       width: 80px;
@@ -67,86 +66,14 @@
 <body>
   <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer">
   <div class="wheel" id="wheel">
-    
-    <div class="sector" style="--i:0;">
-        <div class="label" style="transform: rotate(18deg);">
-            Tatlı + Türk Kahvesi
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:1;">
-        <div class="label" style="transform: rotate(-18deg);">
-            2 Adet Soğuk İçecek
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:2;">
-        <div class="label" style="transform: rotate(-54deg);">
-            Nargile Bedava
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:3;">
-        <div class="label" style="transform: rotate(-90deg);">
-            2 Bira + 1 Cips
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:4;">
-        <div class="label" style="transform: rotate(-126deg);">
-            %20 İndirim
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:5;">
-        <div class="label" style="transform: rotate(-162deg);">
-            Milkshake / Soğuk Kahve
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:6;">
-        <div class="label" style="transform: rotate(-198deg);">
-            Şansını Bir Daha Dene
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:7;">
-        <div class="label" style="transform: rotate(-234deg);">
-            3 Top Dondurma
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:8;">
-        <div class="label" style="transform: rotate(-270deg);">
-            Boş Dilim 😄
-        </div>
-    </div>
-    
-
-    <div class="sector" style="--i:9;">
-        <div class="label" style="transform: rotate(-306deg);">
-            %10 İndirim
-        </div>
-    </div>
-    
+    <div class="sector" style="--i:0;"><span>Tatlı + Türk Kahvesi</span></div><div class="sector" style="--i:1;"><span>2 Adet Soğuk İçecek</span></div><div class="sector" style="--i:2;"><span>Nargile Bedava</span></div><div class="sector" style="--i:3;"><span>2 Bira + 1 Cips</span></div><div class="sector" style="--i:4;"><span>%20 İndirim</span></div><div class="sector" style="--i:5;"><span>Milkshake / Soğuk Kahve</span></div><div class="sector" style="--i:6;"><span>Şansını Bir Daha Dene</span></div><div class="sector" style="--i:7;"><span>3 Top Dondurma</span></div><div class="sector" style="--i:8;"><span>Boş Dilim 😄</span></div><div class="sector" style="--i:9;"><span>%10 İndirim</span></div>
   </div>
-  <button id="spinBtn" onclick="spin()">Çevir!</button>
+  <button onclick="spin()">Çevir!</button>
 
-  
-<script>
-    let spinning = false;
-
+  <script>
     let deg = 0;
-    let spinCount = 0;
     const maxSpins = 2;
+    const weekMs = 7 * 24 * 60 * 60 * 1000;
     const prizes = [
       "Tatlı + Türk Kahvesi",
       "2 Adet Soğuk İçecek",
@@ -160,79 +87,54 @@
       "%10 İndirim"
     ];
 
-    
-function spin() {
-  if (spinning) return;
-  if (!canSpin()) {
-    alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin.");
-    return;
-  }
-  recordSpin();
-  spinning = true;
-  document.getElementById("spinBtn").disabled = true;
+    function canSpin() {
+      let count = localStorage.getItem("spinCount");
+      let lastTime = localStorage.getItem("lastSpinTime");
+      const now = new Date().getTime();
 
-  const totalTime = 6000;
-  const intervalTime = 50;
-  const steps = totalTime / intervalTime;
-  let step = 0;
-  let currentDeg = deg % 360;
-
-  const maxSpinDeg = 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
-  const targetDeg = currentDeg + maxSpinDeg;
-  const incrementBase = maxSpinDeg / steps;
-
-  const spinInterval = setInterval(() => {
-    const progress = step / steps;
-    const easeOutFactor = 1 - Math.pow(1 - progress, 3); // ease-out
-    const nextDeg = currentDeg + (maxSpinDeg * easeOutFactor);
-    document.getElementById("wheel").style.transform = `rotate(${nextDeg}deg)`;
-    step++;
-    if (step >= steps) {
-      clearInterval(spinInterval);
-      deg = targetDeg;
-
-      const normalizedDeg = deg % 360;
-      const correctedDeg = 360 - normalizedDeg;
-      let sectorIndex = Math.floor(correctedDeg / 36) % 10;
-
-      const currentSpinCount = parseInt(localStorage.getItem("spinCount") || "1");
-      let prize;
-      if (currentSpinCount === 2) {
-        const lowTierPrizes = [6, 8, 9];
-        const forcedIndex = lowTierPrizes[Math.floor(Math.random() * lowTierPrizes.length)];
-        sectorIndex = forcedIndex;
-        deg = 360 * Math.floor(deg / 360) + (360 - (forcedIndex * 36) - 18); // hizaya getir
-        document.getElementById("wheel").style.transform = `rotate(${deg}deg)`;
+      if (!lastTime || now - lastTime > weekMs) {
+        localStorage.setItem("spinCount", "0");
+        localStorage.setItem("lastSpinTime", now.toString());
+        count = "0";
       }
 
-      prize = prizes[sectorIndex];
-      setTimeout(() => {
-        alert("Kazandın: " + prize);
-        spinning = false;
-        document.getElementById("spinBtn").disabled = false;
-      }, 300);
+      return parseInt(count) < maxSpins;
     }
-  }, intervalTime);
-}
 
-      if (spinCount >= maxSpins) {
-        alert("Çevirme hakkınız doldu.");
+    function recordSpin() {
+      let count = parseInt(localStorage.getItem("spinCount") || "0");
+      count++;
+      localStorage.setItem("spinCount", count.toString());
+    }
+
+    function spin() {
+      if (!canSpin()) {
+        alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin.");
         return;
       }
-      spinCount++;
+      recordSpin();
 
-      const extraDeg = Math.floor(Math.random() * 360);
-      const rotateBy = (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg;
-      deg += rotateBy;
-      document.getElementById("wheel").style.transform = `rotate(${deg}deg)`;
+      const wheel = document.getElementById("wheel");
+      const currentSpinCount = parseInt(localStorage.getItem("spinCount") || "1");
+
+      let forcedIndex = null;
+      if (currentSpinCount === 2) {
+        const lowTierPrizes = [6, 8, 9];
+        forcedIndex = lowTierPrizes[Math.floor(Math.random() * lowTierPrizes.length)];
+        deg += 360 * 4 + (360 - (forcedIndex * 36) - 18);
+      } else {
+        deg += 360 * (3 + Math.floor(Math.random() * 3)) + Math.floor(Math.random() * 360);
+      }
+
+      wheel.style.transform = `rotate(${deg}deg)`;
 
       setTimeout(() => {
         const normalizedDeg = deg % 360;
         const correctedDeg = 360 - normalizedDeg;
-        const sectorIndex = Math.floor(correctedDeg / 36) % 10;
+        const sectorIndex = forcedIndex !== null ? forcedIndex : Math.floor(correctedDeg / 36) % 10;
         const prize = prizes[sectorIndex];
         alert("Kazandın: " + prize);
-      }, 5200);
+      }, 6200);
     }
   </script>
 </body>
