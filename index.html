@@ -1,1 +1,88 @@
-...
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandomim Ödül Çarkı</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: #fefefe;
+      font-family: Arial, sans-serif;
+    }
+    .wheel {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #333;
+      overflow: hidden;
+      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    .sector {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      background: hsl(calc(var(--i) * 36deg), 80%, 60%);
+      transform-origin: 100% 100%;
+      transform: rotate(calc(var(--i) * 36deg)) skewY(-60deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      color: white;
+      padding: 10px;
+    }
+    .logo-pointer {
+      width: 60px;
+      height: 60px;
+      position: relative;
+      top: 10px;
+      margin-bottom: -40px;
+      transform: rotate(180deg);
+    }
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <img src="logo_resized.png" alt="Pandomim Logo" class="logo-pointer">
+  <div class="wheel" id="wheel">
+    <div class="sector" style="--i:0;">Tatlı + Türk Kahvesi</div>
+<div class="sector" style="--i:1;">2 Adet Soğuk İçecek</div>
+<div class="sector" style="--i:2;">Nargile Bedava</div>
+<div class="sector" style="--i:3;">2 Bira + 1 Cips</div>
+<div class="sector" style="--i:4;">%20 İndirim</div>
+<div class="sector" style="--i:5;">Milkshake / Soğuk Kahve</div>
+<div class="sector" style="--i:6;">Şansını Bir Daha Dene</div>
+<div class="sector" style="--i:7;">3 Top Dondurma</div>
+<div class="sector" style="--i:8;">Boş Dilim 😄</div>
+<div class="sector" style="--i:9;">%10 İndirim</div>
+  </div>
+  <button onclick="spin()">Çevir!</button>
+
+  <script>
+    let deg = 0;
+    function spin() {
+      const wheel = document.getElementById("wheel");
+      const extraDeg = Math.floor(Math.random() * 360); // rastgele fazladan açı
+      deg += (360 * (3 + Math.floor(Math.random() * 3))) + extraDeg; // 3-5 tur
+      wheel.style.transform = `rotate(${deg}deg)`;
+    }
+  </script>
+</body>
+</html>
