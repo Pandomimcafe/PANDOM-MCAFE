@@ -8,13 +8,19 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>"Bugün harika bir gün olabilir, yeter ki sen iste."</h2>
-  <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
-  <p id="motive"></p>
-  <div id="wheel" class="wheel"></div>
-  <button onclick="spin()">Çevir!</button>
-  <p class="info">Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.</p>
-  <a href="https://instagram.com/pandomimcafe" target="_blank">Instagram'a Git</a>
+  <div class="container">
+    <h2 id="motiveText">Bugün harika bir gün olabilir, yeter ki sen iste.</h2>
+    <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
+    <div class="wheel-container">
+      <img src="logo.png" alt="Logo" class="logo left"/>
+      <div class="arrow"></div>
+      <canvas id="wheel" width="500" height="500"></canvas>
+      <img src="logo.png" alt="Logo" class="logo right"/>
+    </div>
+    <button onclick="spin()">Çevir!</button>
+    <p class="note">Tüm hediyeler için <b>Instagram</b> hesabımızı takip edin ve <b>DM'den ekran görüntüsü</b> gönderin.<br>Her cihaz yalnızca <b>haftada 2 kez</b> çark çevirebilir.</p>
+    <a href="https://instagram.com" class="insta-btn">Instagram’a Git</a>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

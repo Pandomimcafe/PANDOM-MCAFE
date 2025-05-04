@@ -1,117 +1,78 @@
 
 const motives = [
   "Bugün harika bir gün olabilir, yeter ki sen iste.",
-  "Şans hazır olanı sever.",
-  "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
-  "Pes etme, belki de zafer bir sonraki denemededir.",
-  "Gülümse, çünkü enerjin çevreni etkiler.",
-  "Unutma: En karanlık an, şafağa en yakın olandır.",
-  "Hayat, cesur adımlarla değişir.",
-  "Bugün senin günün olabilir!",
-  "Güzellikler seni bekliyor.",
+  "Hayallerin için adım at!",
+  "Küçük adımlar büyük farklar yaratır.",
+  "Senin için her şey mümkün.",
+  "Kendine güven!",
+  "Gülümse, çünkü hayat güzel.",
   "İyi şeyler zaman alır.",
-  "Her şey yoluna girecek.",
-  "İçindeki güce güven.",
-  "Sen yeter ki iste.",
-  "Her yeni gün bir şanstır.",
-  "Yarınlar umutla gelir.",
-  "Kalbinin sesini dinle.",
-  "Kendine inan.",
-  "Başarı sabır ister.",
-  "Vazgeçme!",
-  "Güzel günler yakında.",
-  "Yolun açık olsun.",
-  "Kendin ol.",
-  "Yapabilirsin.",
-  "Bugün bir mucize olabilir.",
-  "Umut hep vardır.",
-  "Karanlıkta bile ışık var.",
-  "Bir tebessüm yeter.",
-  "Sen değerlisin.",
-  "Hedefine odaklan.",
-  "Her şey mümkün.",
-  "Pozitif düşün.",
-  "İnan, başar.",
-  "Kendine bir iyilik yap.",
-  "Bugün daha iyi ol.",
-  "Şükretmeyi unutma.",
-  "Her adım kıymetlidir.",
-  "Korkma, dene.",
-  "Cesaret bulaşıcıdır.",
-  "Sakin ol, geçecek.",
-  "Hayallerine sarıl.",
-  "Zorluklar geçici.",
-  "Sabret, çaba göster.",
-  "Kıymet bil.",
-  "Bugünü yaşa.",
-  "Anda kal.",
-  "Gülümse.",
-  "Yorgunsan dinlen.",
-  "Umut et.",
-  "Affet.",
-  "Sev.",
-  "Hisset.",
-  "Seninle gurur duyuyorum.",
-  "Gücün farkında mısın?",
-  "Bugün çok güzelsin.",
-  "Harikasın!",
-  "Sen özelsin.",
-  "Kendine zaman ayır.",
-  "İyi ki varsın.",
-  "Yalnız değilsin.",
-  "Dostların seni seviyor.",
-  "İyi bir insansın.",
-  "Bunu hak ediyorsun.",
-  "Çok çalıştın.",
-  "Mola ver.",
-  "Sen bir ışıksın.",
-  "Neşe saç.",
-  "Kendi kahramanın ol.",
-  "Kendini sev.",
-  "İzin ver iyilik gelsin.",
-  "İç huzurun önemli.",
-  "Bugün fark yarat.",
-  "Günün ilham kaynağı sensin.",
-  "Senin için buradayım.",
-  "Kendinle gurur duy.",
-  "Kendine nazik ol.",
-  "Düşüncelerin değerli.",
-  "Gönlünü ferah tut.",
-  "İçindeki çocuk gülümsesin.",
-  "Yarın yeni bir fırsat.",
-  "Uyan, derin nefes al.",
-  "Senin hikayen yeni başlıyor.",
-  "Işığın hiç sönmesin.",
-  "Umut hep sende kalsın.",
-  "Bugün en güzel günün olsun.",
-  "Her şeyin bir zamanı var.",
-  "Zamanla her şey olur.",
-  "Senin zamanın şimdi.",
-  "Hayat güzel, sen de.",
-  "Haydi başla!",
-  "Harekete geç.",
-  "Bekleme.",
-  "Denemekten korkma.",
-  "Kalbini aç.",
-  "İçinden geldiği gibi yaşa.",
-  "Kendine dürüst ol.",
-  "Sen değiş, dünya değişir.",
-  "Güzel haberler al.",
-  "Mutluluğu seç.",
-  "Denge kur.",
-  "İyiliğe alan aç.",
-  "Düşün, hisset, yaşa.",
-  "Senin gücün yeter.",
-  "Gülüşün her şeye değer."
+  "Bugün senin günün.",
+  "Her sabah yeni bir başlangıç.",
+  "Zorluklar seni güçlü yapar."
 ];
 
-let motiveCount = 0;
 function newMotive() {
-  motiveCount++;
-  const el = document.getElementById("motive");
-  if (motiveCount > 2) {
-    el.textContent = ""Artık başka cümle yok... Cafede dertleşiriz ☕"";
-    return;
+  const random = Math.floor(Math.random() * motives.length);
+  document.getElementById("motiveText").innerText = motives[random];
+}
+
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const rewards = [
+  "Milkshake", "2 Bira + Cips", "%10 İndirim",
+  "Şansını Dene", "Sıcak Kahve", "Boş 😅",
+  "3 Top Dondurma", "Çekiliş Hakkı", "Bir Tatlı", "Bir Soğuk İçecek"
+];
+
+let angles = [];
+let startAngle = 0;
+const arc = Math.PI / (rewards.length / 2);
+for (let i = 0; i < rewards.length; i++) angles.push(i * arc);
+
+function drawWheel() {
+  for (let i = 0; i < rewards.length; i++) {
+    ctx.beginPath();
+    ctx.fillStyle = `hsl(${(i * 360) / rewards.length}, 70%, 60%)`;
+    ctx.moveTo(250, 250);
+    ctx.arc(250, 250, 200, angles[i], angles[i] + arc);
+    ctx.lineTo(250, 250);
+    ctx.fill();
+    ctx.save();
+    ctx.fillStyle = "white";
+    ctx.translate(250, 250);
+    ctx.rotate(angles[i] + arc / 2);
+    ctx.textAlign = "right";
+    ctx.fillText(rewards[i], 190, 10);
+    ctx.restore();
   }
-  el.textContent = motives[Math.floor(Math.random() * motives.length)];
+}
+drawWheel();
+
+let spinning = false;
+
+function spin() {
+  if (spinning) return;
+  spinning = true;
+  let rotation = Math.random() * 360 + 720;
+  let duration = 7000;
+  let start = null;
+  const tick = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = timestamp - start;
+    const ease = 1 - Math.pow(1 - progress / duration, 3);
+    const angle = rotation * ease;
+    canvas.style.transform = `rotate(${angle}deg)`;
+    if (progress < duration) {
+      requestAnimationFrame(tick);
+    } else {
+      const finalAngle = (angle % 360);
+      const index = Math.floor((360 - finalAngle + 90) % 360 / (360 / rewards.length));
+      setTimeout(() => {
+        alert("Kazandın: " + rewards[index]);
+        spinning = false;
+      }, 100);
+    }
+  };
+  requestAnimationFrame(tick);
 }

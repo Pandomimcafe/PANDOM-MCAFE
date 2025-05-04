@@ -2,19 +2,51 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
+  background: #fff;
+  color: #000;
+}
+.container {
   padding: 20px;
 }
-.wheel {
-  width: 300px;
-  height: 300px;
-  margin: 20px auto;
-  border-radius: 50%;
-  border: 10px solid black;
+.wheel-container {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
 }
-.sector {
-  width: 50%;
-  height: 50%;
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid red;
   position: absolute;
-  transform-origin: 100% 100%;
+  top: -20px;
+  z-index: 10;
+}
+.logo {
+  width: 50px;
+  height: auto;
+}
+.logo.left {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.logo.right {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.insta-btn {
+  background: #ec407a;
+  color: white;
+  padding: 10px 20px;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
 }
