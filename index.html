@@ -2,25 +2,19 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Pandomim Ödül Çarkı</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <h1>Bugün harika bir gün olabilir, yeter ki sen iste.</h1>
-    <button id="newMotiveBtn">Bir güzel söze daha ihtiyacım var</button>
-    <p id="motiveText">Başka cümle yok... Cafede dertleşiriz ☕</p>
-    <img src="logo.png" class="logo side-logo left-logo">
-    <img src="logo.png" class="logo side-logo right-logo">
-    <img src="logo.png" class="logo center-logo" id="pointer">
-    <canvas id="wheelCanvas" width="500" height="500"></canvas>
-    <button id="spinBtn">Çevir!</button>
-    <p class="info-text">
-        Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>.
-        Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
-    </p>
-    <a class="insta-button" href="https://instagram.com" target="_blank">Instagram'a Git</a>
+    <h2>Bugün harika bir gün olabilir, yeter ki sen iste.</h2>
+    <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
+    <p id="motive">İyi düşün, iyi olsun.</p>
+    <img src="logo.png" alt="İmleç" id="pointer"/>
+    <canvas id="wheel" width="500" height="500"></canvas>
+    <button id="spin" onclick="spinWheel()">Çevir!</button>
+    <p id="resultText"></p>
     <script src="script.js"></script>
 </body>
 </html>
