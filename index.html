@@ -1,96 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pandomim Ödül Çarkı</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #fff;
-      padding: 20px;
-    }
-    .pointer img.logo-pointer {
-      width: 40px;
-      transform: rotate(180deg);
-      margin: 10px auto;
-    }
-    .logo {
-      width: 60px;
-      margin: 0 20px;
-    }
-    #wheel {
-      width: 300px;
-      height: 300px;
-      border: 10px solid #000;
-      border-radius: 50%;
-      margin: 20px auto;
-    }
-    .insta-btn {
-      background: #ec407a;
-      color: white;
-      padding: 10px 20px;
-      display: inline-block;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
 <body>
   <h2 id="motiveText">Bugün harika bir gün olabilir, yeter ki sen iste.</h2>
-  <button id="motiveBtn">Bir güzel söze daha ihtiyacım var</button>
-
-  <div class="pointer">
-    <img src="logo.png" class="logo-pointer" alt="İmleç">
+  <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
+  
+  <!-- İmleç Logo -->
+  <div style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+    <img src="logo.png" alt="İmleç" style="width: 40px; transform: rotate(180deg); position: absolute; top: -10px;" />
   </div>
 
-  <div id="wheel">
-    <!-- Çark grafiği JS ile çizilecek -->
-  </div>
-
+  <canvas id="wheel" width="500" height="500"></canvas>
   <button onclick="spin()">Çevir!</button>
 
-  <p>Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.</p>
-
-  <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
-
-  <script>
-    const motivationalQuotes = [
-      "Bugün harika bir gün olabilir, yeter ki sen iste.",
-      "Hayallerin için adım at!",
-      "Küçük adımlar büyük farklar yaratır.",
-      "Senin için her şey mümkün.",
-      "Kendine güven!",
-      "Gülümse, çünkü hayat güzel.",
-      "İyi şeyler zaman alır.",
-      "Bugün senin günün.",
-      "Her sabah yeni bir başlangıç.",
-      "Zorluklar seni güçlü yapar."
-    ];
-
-    function showNewMotive() {
-      const random = Math.floor(Math.random() * motivationalQuotes.length);
-      document.getElementById("motiveText").innerText = motivationalQuotes[random];
-    }
-
-    const motiveButton = document.getElementById("motiveBtn");
-
-    motiveButton.addEventListener("click", () => {
-      const count = parseInt(localStorage.getItem("motiveCount") || "0");
-      if (count < 2) {
-        showNewMotive();
-        localStorage.setItem("motiveCount", count + 1);
-      } else {
-        document.getElementById("motiveText").innerText = "Başka cümle yok... Cafede dertleşiriz ☕";
-      }
-    });
-
-    function spin() {
-      alert("Çark fonksiyonu henüz tanımlanmadı.");
-    }
-  </script>
+  <p style="margin-top: 20px;">
+    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
+    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+  </p>
+  <a href="https://instagram.com/" target="_blank">
+    <button style="background-color: #e91e63; color: white;">Instagram’a Git</button>
+  </a>
 </body>
 </html>
