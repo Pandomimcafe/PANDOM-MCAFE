@@ -1,99 +1,95 @@
-const canvas = document.getElementById("wheelCanvas");
-const ctx = canvas.getContext("2d");
 
-const options = [
-  "Soğuk Kahve", "Milkshake", "%10 İndirim", "Şansını Dene", 
-  "2 Bira + Cips (250₺)", "Bir Dahaki Gelişe", "Boş 😅", 
-  "3 Top Dondurma", "%20 İndirim"
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+const resultText = document.getElementById('resultText');
+const spinBtn = document.getElementById('spinBtn');
+
+const segments = [
+  "3 Top Dondurma", "%20 İndirim", "Soğuk Kahve", "Milkshake", "%10 İndirim",
+  "Şansını Dene", "2 Bira + Cips (250₺)", "Bir Daha!", "Boş", "Tatlı + Türk Kahvesi"
 ];
+const colors = ["#f87171","#fbbf24","#34d399","#60a5fa","#a78bfa","#f472b6","#fb923c","#4ade80","#facc15","#38bdf8"];
+let angle = 0;
+let spinCount = parseInt(localStorage.getItem('spinCount') || '0');
+const maxSpins = 2;
+const week = 7 * 24 * 60 * 60 * 1000;
 
-const colors = [
-  "#3498db", "#f39c12", "#e67e22", "#8e44ad",
-  "#e74c3c", "#d63031", "#2d3436", "#27ae60", "#9b59b6"
-];
-
-let startAngle = 0;
-let arc = Math.PI / (options.length / 2);
-let spinTimeout = null;
-
-let spinsLeft = 2;
-
-function drawRouletteWheel() {
-  const outsideRadius = 200;
-  const textRadius = 160;
-  const insideRadius = 100;
-
+function drawWheel() {
+  const arc = 2 * Math.PI / segments.length;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 4;
-
-  ctx.font = "16px Arial";
-
-  for (let i = 0; i < options.length; i++) {
-    let angle = startAngle + i * arc;
-    ctx.fillStyle = colors[i];
-
+  for (let i = 0; i < segments.length; i++) {
+    const start = angle + i * arc;
     ctx.beginPath();
-    ctx.arc(250, 250, outsideRadius, angle, angle + arc, false);
-    ctx.arc(250, 250, insideRadius, angle + arc, angle, true);
+    ctx.moveTo(200, 200);
+    ctx.arc(200, 200, 200, start, start + arc);
+    ctx.fillStyle = colors[i];
     ctx.fill();
-
     ctx.save();
-    ctx.fillStyle = "white";
-    ctx.translate(250 + Math.cos(angle + arc / 2) * textRadius,
-                  250 + Math.sin(angle + arc / 2) * textRadius);
-    ctx.rotate(angle + arc / 2);
-    ctx.fillText(options[i], -ctx.measureText(options[i]).width / 2, 0);
+    ctx.translate(200, 200);
+    ctx.rotate(start + arc / 2);
+    ctx.fillStyle = "#fff";
+    ctx.font = "14px Arial";
+    ctx.textAlign = "right";
+    ctx.fillText(segments[i], 180, 0);
     ctx.restore();
   }
 }
+drawWheel();
 
-function rotateWheel() {
-  startAngle += Math.PI / 64;
-  drawRouletteWheel();
-  spinTimeout = setTimeout(rotateWheel, 10);
-}
-
-function stopRotateWheel() {
-  clearTimeout(spinTimeout);
-  const degrees = startAngle * 180 / Math.PI + 90;
-  const arcd = arc * 180 / Math.PI;
-  const index = Math.floor((360 - degrees % 360) / arcd);
-  alert("Kazandığın: " + options[index]);
-}
-
-function spinWheel() {
-  if (spinsLeft <= 0) {
-    alert("Bu haftalık hakkını kullandın!");
+spinBtn.addEventListener("click", () => {
+  if (spinCount >= maxSpins) {
+    resultText.textContent = "Bu haftalık hakkınızı kullandınız.";
     return;
   }
 
-  rotateWheel();
+  const extra = Math.floor(Math.random() * 360);
+  const total = 360 * 5 + extra;
+  angle += total * Math.PI / 180;
+
+  canvas.style.transition = "transform 5s ease-out";
+  canvas.style.transform = `rotate(${total}deg)`;
+
   setTimeout(() => {
-    stopRotateWheel();
-    spinsLeft--;
-  }, 3000);
-}
+    const degrees = (total + 90) % 360;
+    const segmentAngle = 360 / segments.length;
+    const index = Math.floor(segments.length - (degrees / segmentAngle)) % segments.length;
+    resultText.textContent = "Kazandın: " + segments[index];
+    spinCount++;
+    localStorage.setItem("spinCount", spinCount.toString());
+    localStorage.setItem("lastSpin", Date.now().toString());
+  }, 5200);
+});
 
-let motiveIndex = 0;
+const motiveEl = document.getElementById("motive");
+const motiveBtn = document.getElementById("motiveBtn");
 const motives = [
-  "Bugün harika bir şey olacak!",
-  "Senin gülüşün her şeye değer.",
+  "Gülümse, çünkü hayat sana gülümsüyor.",
+  "İnan, başar, tekrar et.",
+  "Bugün senin günün!",
+  "Kendine inandığın an başlarsın.",
+  "Yol ne kadar uzun olursa olsun ilk adımla başlar.",
   "İyi düşün, iyi olsun.",
-  "Güzel günler yakında!",
-  "İnandığın her şey mümkün.",
-  "Kendine inan!",
-  "Kahveni iç, çarkı çevir, gülümse."
+  "Her yeni gün bir fırsattır.",
+  "Hayallerin için çalış!",
+  "Enerjin çevreni aydınlatır.",
+  "Pes etme, zafer yakındır."
 ];
+let motiveCount = parseInt(localStorage.getItem("motiveCount") || "0");
 
-function showMotive() {
-  if (motiveIndex < 2) {
-    document.getElementById("motiveText").innerText = motives[Math.floor(Math.random() * motives.length)];
-    motiveIndex++;
-  } else {
-    document.getElementById("motiveText").innerText = "Başka cümle yok.. Cafede dertleşiriz ☕";
+motiveBtn.addEventListener("click", () => {
+  if (motiveCount >= 2) {
+    motiveEl.textContent = "Başka cümle yok... Cafede dertleşiriz ☕";
+    return;
   }
-}
+  const rnd = Math.floor(Math.random() * motives.length);
+  motiveEl.textContent = '"' + motives[rnd] + '"';
+  motiveCount++;
+  localStorage.setItem("motiveCount", motiveCount.toString());
+});
 
-drawRouletteWheel();
+// haftalık sıfırlama
+const lastSpin = parseInt(localStorage.getItem('lastSpin') || '0');
+if (Date.now() - lastSpin > week) {
+  localStorage.setItem("spinCount", "0");
+  localStorage.setItem("motiveCount", "0");
+}
