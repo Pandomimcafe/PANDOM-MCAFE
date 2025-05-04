@@ -1,33 +1,31 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandomim Ödül Çarkı</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <div class="motivation-box" id="motive">"Bugün harika bir gün olabilir."</div>
-  <button id="motiveBtn">Bir güzel söze daha ihtiyacım var</button>
-
-  <div class="wheel-wrapper">
-    <img src="logo.png" alt="Logo" class="side-logo left">
-    <div class="wheel-container">
-      <img src="logo.png" alt="İmleç" id="pointer" />
-      <canvas id="wheel" width="400" height="400"></canvas>
+  <div class="container">
+    <h1>Bugün harika bir gün olabilir, yeter ki sen iste.</h1>
+    <button onclick="showMotive()">Bir güzel söze daha ihtiyacım var</button>
+    <p id="motiveText" class="motive"></p>
+    <div class="logos">
+      <img src="logo.png" alt="Logo" class="logo left" />
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="500" height="500"></canvas>
+      <img src="logo.png" alt="Logo" class="logo right" />
     </div>
-    <img src="logo.png" alt="Logo" class="side-logo right">
+    <button onclick="spinWheel()" class="spin-button">Çevir!</button>
+    <p class="info-text">
+      Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
+      <strong>DM'den ekran görüntüsü gönderin.</strong> Her cihaz yalnızca
+      <strong>haftada 2 kez</strong> çark çevirebilir.
+    </p>
+    <a href="https://www.instagram.com/pandomimcafe/" target="_blank" class="insta-link">Instagram'a Git</a>
   </div>
-
-  <button id="spinBtn">Çevir!</button>
-  <p id="resultText"></p>
-
-  <p class="info">
-    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>.<br>
-    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
-  </p>
-  <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-button">Instagram'a Git</a>
 
   <script src="script.js"></script>
 </body>
