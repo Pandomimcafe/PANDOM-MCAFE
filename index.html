@@ -8,25 +8,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="logos">
-      <img src="logo.png" alt="Logo" class="side-logo">
-      <div class="main-content">
-        <h2>Bugün harika bir gün olabilir, yeter ki sen iste.</h2>
-        <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
-        <div class="wheel-container">
-          <img src="logo.png" alt="İmleç" class="pointer-logo">
-          <canvas id="wheel" width="300" height="300"></canvas>
-        </div>
-        <button id="spinBtn">Çevir!</button>
-        <p class="note">
-          Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM'den ekran görüntüsü gönderin</strong>.<br>
-          Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
-        </p>
-        <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
-      </div>
-      <img src="logo.png" alt="Logo" class="side-logo">
+  <h1>Bugün harika bir gün olabilir, yeter ki sen iste.</h1>
+
+  <button onclick="newMotive()">Bir güzel söze daha ihtiyacım var</button>
+  <div id="motiveText"></div>
+
+  <div class="logo-row">
+    <img src="logo.png" alt="Logo" class="side-logo">
+    <div class="wheel-container">
+      <img src="logo.png" alt="İmleç" id="pointer">
+      <canvas id="wheel" width="500" height="500"></canvas>
     </div>
+    <img src="logo.png" alt="Logo" class="side-logo">
   </div>
+
+  <button onclick="spinWheel()">Çevir!</button>
+
+  <p class="info">
+    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong>
+    ve <strong>DM'den ekran görüntüsü gönderin.</strong><br>
+    Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+  </p>
+
+  <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-button">Instagram'a Git</a>
+
+  <script src="script.js"></script>
 </body>
 </html>
