@@ -1,52 +1,64 @@
 
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
   text-align: center;
   background: #fff;
   color: #000;
 }
 .container {
+  max-width: 900px;
+  margin: auto;
   padding: 20px;
+}
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.side-logo {
+  width: 60px;
+  margin: 10px;
+}
+.main-content {
+  flex: 1 1 300px;
+}
+.pointer-logo {
+  width: 30px;
+  margin-bottom: -10px;
 }
 .wheel-container {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
-}
-.arrow {
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-bottom: 25px solid red;
-  position: absolute;
-  top: -20px;
-  z-index: 10;
-}
-.logo {
-  width: 50px;
-  height: auto;
-}
-.logo.left {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.logo.right {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  margin: 20px 0;
 }
 .insta-btn {
-  background: #ec407a;
-  color: white;
-  padding: 10px 20px;
   display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #e1306c;
+  color: white;
   text-decoration: none;
   border-radius: 5px;
-  margin-top: 10px;
+}
+.note {
+  margin-top: 20px;
+  font-size: 14px;
+}
+button {
+  padding: 10px 15px;
+  margin: 10px;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .logos {
+    flex-direction: column;
+  }
+  .side-logo {
+    width: 50px;
+  }
+  .pointer-logo {
+    width: 25px;
+  }
 }
