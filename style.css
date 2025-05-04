@@ -4,60 +4,17 @@ body {
   text-align: center;
   padding: 20px;
 }
-.wheel-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
-}
-#wheel {
+.wheel {
   width: 300px;
   height: 300px;
+  margin: 20px auto;
   border-radius: 50%;
-  border: 8px solid black;
+  border: 10px solid black;
   position: relative;
-  transition: transform 7s cubic-bezier(0.33, 1, 0.68, 1);
-  overflow: hidden;
 }
 .sector {
-  position: absolute;
   width: 50%;
   height: 50%;
-  left: 50%;
-  top: 0;
-  transform-origin: left bottom;
-}
-.sector span {
-  display: block;
-  transform: skewY(54deg) rotate(-18deg);
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-  padding-top: 10px;
-}
-#pointer {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 20px solid red;
-  margin: 10px auto;
-}
-.logo-left, .logo-right {
-  width: 80px;
-}
-.btn, .insta-btn {
-  background-color: #000;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 10px;
-  display: inline-block;
-}
-.insta-btn {
-  background-color: #E1306C;
+  position: absolute;
+  transform-origin: 100% 100%;
 }

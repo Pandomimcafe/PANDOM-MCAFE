@@ -5,7 +5,104 @@ const motives = [
   "Küçük bir adım, büyük değişimlerin başlangıcıdır.",
   "Pes etme, belki de zafer bir sonraki denemededir.",
   "Gülümse, çünkü enerjin çevreni etkiler.",
-  "Unutma: En karanlık an, şafağa en yakın olandır."
+  "Unutma: En karanlık an, şafağa en yakın olandır.",
+  "Hayat, cesur adımlarla değişir.",
+  "Bugün senin günün olabilir!",
+  "Güzellikler seni bekliyor.",
+  "İyi şeyler zaman alır.",
+  "Her şey yoluna girecek.",
+  "İçindeki güce güven.",
+  "Sen yeter ki iste.",
+  "Her yeni gün bir şanstır.",
+  "Yarınlar umutla gelir.",
+  "Kalbinin sesini dinle.",
+  "Kendine inan.",
+  "Başarı sabır ister.",
+  "Vazgeçme!",
+  "Güzel günler yakında.",
+  "Yolun açık olsun.",
+  "Kendin ol.",
+  "Yapabilirsin.",
+  "Bugün bir mucize olabilir.",
+  "Umut hep vardır.",
+  "Karanlıkta bile ışık var.",
+  "Bir tebessüm yeter.",
+  "Sen değerlisin.",
+  "Hedefine odaklan.",
+  "Her şey mümkün.",
+  "Pozitif düşün.",
+  "İnan, başar.",
+  "Kendine bir iyilik yap.",
+  "Bugün daha iyi ol.",
+  "Şükretmeyi unutma.",
+  "Her adım kıymetlidir.",
+  "Korkma, dene.",
+  "Cesaret bulaşıcıdır.",
+  "Sakin ol, geçecek.",
+  "Hayallerine sarıl.",
+  "Zorluklar geçici.",
+  "Sabret, çaba göster.",
+  "Kıymet bil.",
+  "Bugünü yaşa.",
+  "Anda kal.",
+  "Gülümse.",
+  "Yorgunsan dinlen.",
+  "Umut et.",
+  "Affet.",
+  "Sev.",
+  "Hisset.",
+  "Seninle gurur duyuyorum.",
+  "Gücün farkında mısın?",
+  "Bugün çok güzelsin.",
+  "Harikasın!",
+  "Sen özelsin.",
+  "Kendine zaman ayır.",
+  "İyi ki varsın.",
+  "Yalnız değilsin.",
+  "Dostların seni seviyor.",
+  "İyi bir insansın.",
+  "Bunu hak ediyorsun.",
+  "Çok çalıştın.",
+  "Mola ver.",
+  "Sen bir ışıksın.",
+  "Neşe saç.",
+  "Kendi kahramanın ol.",
+  "Kendini sev.",
+  "İzin ver iyilik gelsin.",
+  "İç huzurun önemli.",
+  "Bugün fark yarat.",
+  "Günün ilham kaynağı sensin.",
+  "Senin için buradayım.",
+  "Kendinle gurur duy.",
+  "Kendine nazik ol.",
+  "Düşüncelerin değerli.",
+  "Gönlünü ferah tut.",
+  "İçindeki çocuk gülümsesin.",
+  "Yarın yeni bir fırsat.",
+  "Uyan, derin nefes al.",
+  "Senin hikayen yeni başlıyor.",
+  "Işığın hiç sönmesin.",
+  "Umut hep sende kalsın.",
+  "Bugün en güzel günün olsun.",
+  "Her şeyin bir zamanı var.",
+  "Zamanla her şey olur.",
+  "Senin zamanın şimdi.",
+  "Hayat güzel, sen de.",
+  "Haydi başla!",
+  "Harekete geç.",
+  "Bekleme.",
+  "Denemekten korkma.",
+  "Kalbini aç.",
+  "İçinden geldiği gibi yaşa.",
+  "Kendine dürüst ol.",
+  "Sen değiş, dünya değişir.",
+  "Güzel haberler al.",
+  "Mutluluğu seç.",
+  "Denge kur.",
+  "İyiliğe alan aç.",
+  "Düşün, hisset, yaşa.",
+  "Senin gücün yeter.",
+  "Gülüşün her şeye değer."
 ];
 
 let motiveCount = 0;
@@ -13,51 +110,8 @@ function newMotive() {
   motiveCount++;
   const el = document.getElementById("motive");
   if (motiveCount > 2) {
-    el.textContent = "Artık başka cümle yok... Cafede dertleşiriz ☕";
+    el.textContent = ""Artık başka cümle yok... Cafede dertleşiriz ☕"";
     return;
   }
   el.textContent = motives[Math.floor(Math.random() * motives.length)];
-}
-
-const prizes = [
-  "Tatlı + Türk Kahvesi", "2 Soğuk İçecek", "Nargile Bedava", "2 Bira + 1 Cips",
-  "%20 İndirim", "Milkshake / Soğuk Kahve", "Şansını Bir Daha Dene",
-  "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
-];
-const colors = ["#f44336", "#3f51b5", "#4caf50", "#ff9800", "#9c27b0", "#00bcd4", "#e91e63", "#8bc34a", "#ffeb3b", "#607d8b"];
-
-const wheel = document.getElementById("wheel");
-prizes.forEach((text, i) => {
-  const sector = document.createElement("div");
-  sector.className = "sector";
-  sector.style.transform = `rotate(${i * 36}deg) skewY(-54deg)`;
-  sector.style.background = colors[i % colors.length];
-  const span = document.createElement("span");
-  span.textContent = text;
-  sector.appendChild(span);
-  wheel.appendChild(sector);
-});
-
-let deg = 0;
-let spinCount = 0;
-
-function spin() {
-  if (spinCount >= 2) {
-    alert("Çevirme hakkınız doldu.");
-    return;
-  }
-  spinCount++;
-
-  let baseDeg = 360 * 3;
-  if (spinCount === 2) baseDeg = 360 * 2;
-
-  deg += baseDeg + Math.floor(Math.random() * 360);
-  wheel.style.transform = `rotate(${deg}deg)`;
-
-  setTimeout(() => {
-    const norm = deg % 360;
-    const corrected = 360 - norm;
-    const index = Math.floor(corrected / 36) % 10;
-    alert("Kazandın: " + prizes[index]);
-  }, 7000);
 }
