@@ -1,148 +1,58 @@
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    text-align: center;
-    padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
-
-#wheelCanvas {
-    border: 5px solid #333;
-    border-radius: 50%;
-    margin: 20px 0;
+.container {
+  padding: 20px;
 }
-
+.wheel {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  border: 8px solid #333;
+  border-radius: 50%;
+}
 button {
-    background-color: orange;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 10px;
-    cursor: pointer;
-    border-radius: 5px;
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
 }
-
 button:hover {
-    background-color: darkorange;
+  background-color: #ff9900;
 }
-
-.logo {
-    width: 80px;
-    height: auto;
-}
-
-.left-logo {
-    float: left;
-    margin-left: 10%;
-}
-
-.right-logo {
-    float: right;
-    margin-right: 10%;
-}
-
-.wheel-container {
-    position: relative;
-    max-width: 500px;
-    margin: auto;
-    clear: both;
-}
-
 .insta-btn {
-    background-color: deeppink;
-    color: white;
-    text-decoration: none;
-    padding: 10px 25px;
-    display: inline-block;
-    margin-top: 10px;
-    border-radius: 8px;
+  display: inline-block;
+  margin-top: 20px;
+  background-color: #e1306c;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
 }
-
-#winMessage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255,255,255,0.95);
-    color: #d32f2f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    font-weight: bold;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    animation: fadeInOut 3s ease-in-out forwards;
+.info-text {
+  font-size: 14px;
+  color: #444;
+  margin-top: 30px;
 }
-
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-/* LOGO HİZALAMA */
-.wheel-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.left-logo, .right-logo {
-    width: 80px;
-    height: auto;
-}
-
-/* TAM EKRAN KAZANMA MESAJI */
-#winMessage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255,255,255,0.96);
-    color: #d32f2f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 42px;
-    font-weight: bold;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-}
-
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-/* LOGO hizalama güncellendi */
-.wheel-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 20px;
-}
-
-.left-logo, .right-logo {
-    width: 70px;
-    height: auto;
-}
-
 #motiveText {
-  font-size: 22px;
-  color: #000;
+  color: black;
   font-weight: bold;
-  margin-top: 15px;
-  text-shadow: 2px 2px 0 #FFD700, -2px -2px 0 #FFD700;
+  text-shadow: 2px 2px yellow;
+  margin: 20px;
+}
+.side-logo {
+  width: 50px;
+  height: auto;
+  margin: 0 20px;
+}
+#logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
