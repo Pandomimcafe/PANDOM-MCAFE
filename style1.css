@@ -1,0 +1,9 @@
+body {
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    background: #fffbea;
+}
+canvas {
+    border: 5px solid #000;
+    margin-top: 20px;
+}

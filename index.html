@@ -1,32 +1,18 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pandomim Ödül Çarkı</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandomim Çarkı #1</title>
+    <link rel="stylesheet" href="style1.css">
 </head>
 <body>
-  <div class="container">
     <h1>Bugün harika bir gün olabilir, yeter ki sen iste.</h1>
-    <button onclick="showMotive()">Bir güzel söze daha ihtiyacım var</button>
-    <p id="motiveText" class="motive"></p>
-    <div class="logos">
-      <img src="logo.png" alt="Logo" class="logo left" />
-      <div class="pointer"></div>
-      <canvas id="wheelCanvas" width="500" height="500"></canvas>
-      <img src="logo.png" alt="Logo" class="logo right" />
-    </div>
-    <button onclick="spinWheel()" class="spin-button">Çevir!</button>
-    <p class="info-text">
-      Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-      <strong>DM'den ekran görüntüsü gönderin.</strong> Her cihaz yalnızca
-      <strong>haftada 2 kez</strong> çark çevirebilir.
-    </p>
-    <a href="https://www.instagram.com/pandomimcafe/" target="_blank" class="insta-link">Instagram'a Git</a>
-  </div>
+    <button onclick="showMessage1()">Bir güzel söze daha ihtiyacım var</button>
+    <p id="message1"></p>
+    <canvas id="wheelCanvas1" width="400" height="400"></canvas>
+    <button onclick="spinWheel1()">Çevir</button>
 
-  <script src="script.js"></script>
+    <script src="script1.js"></script>
 </body>
 </html>
