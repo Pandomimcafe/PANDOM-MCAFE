@@ -80,7 +80,17 @@ spinBtn.addEventListener("click", () => {
             const selectedIndex = Math.floor(((360 - degrees + 22.5) % 360) / 45);
             const reward = segments[selectedIndex];
             resultText.textContent = `Kazandığınız: ${reward}`;
-    showWinMessage(reward);
+    const winMsg = document.getElementById("winMessage");
+    
+if (reward.includes("Boş") || reward.includes("Bir Daha")) {
+    winMsg.innerText = "Bu sefer olmadı... 😅";
+} else {
+    winMsg.innerText = "🎉 Tebrikler! " + reward + " 🎉";
+}
+
+    winMsg.style.animation = "none";
+    void winMsg.offsetWidth;
+    winMsg.style.animation = "fadeInOut 3s ease-in-out forwards";
             spinning = false;
         }
     }
@@ -113,3 +123,35 @@ function showWinMessage(msg) {
     winMsg.innerText = "🎉 Tebrikler! " + msg + " 🎉";
     winMsg.style.animation = "fadeInOut 3s ease-in-out forwards";
 }
+
+// Haftalık çevirme sınırı: 2 kez
+function canSpinThisWeek() {
+    const maxSpins = 2;
+    const weekMS = 7 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    let lastSpin = localStorage.getItem("lastSpinTime");
+    let count = parseInt(localStorage.getItem("spinCount") || "0");
+
+    if (!lastSpin || now - parseInt(lastSpin) > weekMS) {
+        localStorage.setItem("lastSpinTime", now.toString());
+        localStorage.setItem("spinCount", "0");
+        count = 0;
+    }
+
+    return count < maxSpins;
+}
+
+function recordSpinUse() {
+    let count = parseInt(localStorage.getItem("spinCount") || "0");
+    localStorage.setItem("spinCount", (count + 1).toString());
+}
+
+const originalSpin = spinBtn.onclick;
+spinBtn.onclick = () => {
+    if (!canSpinThisWeek()) {
+        alert("Çevirme hakkınız doldu. Lütfen 1 hafta sonra tekrar deneyin. ☕");
+        return;
+    }
+    recordSpinUse();
+    originalSpin();
+};
