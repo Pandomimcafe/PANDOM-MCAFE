@@ -79,7 +79,8 @@ spinBtn.addEventListener("click", () => {
             const degrees = (spinAngle % 360);
             const selectedIndex = Math.floor(((360 - degrees + 22.5) % 360) / 45);
             const reward = segments[selectedIndex];
-            resultText.textContent = `Tebrikler! Kazandığınız: ${reward}`;
+            resultText.textContent = `Kazandığınız: ${reward}`;
+    showWinMessage(reward);
             spinning = false;
         }
     }
@@ -105,3 +106,10 @@ motiveBtn.addEventListener("click", () => {
     motiveText.textContent = motives[randomIndex];
     motiveCount++;
 });
+
+// Ödül ekranına büyük kazanç mesajı ekle
+function showWinMessage(msg) {
+    const winMsg = document.getElementById("winMessage");
+    winMsg.innerText = "🎉 Tebrikler! " + msg + " 🎉";
+    winMsg.style.animation = "fadeInOut 3s ease-in-out forwards";
+}
