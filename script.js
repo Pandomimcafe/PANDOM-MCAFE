@@ -1,75 +1,111 @@
 
-const wheel = document.getElementById("wheel");
-const resultDiv = document.getElementById("result");
-
-const prizes = [
-  "Bir Daha!", "3 Top Dondurma", "%20 İndirim",
-  "Şansını Dene", "%10 İndirim", "Milkshake",
-  "Soğuk Kahve", "2 Bira + Cips (250₺)", "Bir Daha!", "Bir Daha!"
-];
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const spinBtn = document.getElementById("spin");
+const messageEl = document.getElementById("message");
+const motiveBtn = document.getElementById("motiveBtn");
 
 const motives = [
-  "Bugün harika bir gün olabilir, yeter ki sen iste.",
-  "Her gün yeni bir başlangıçtır.",
-  "Senin yapamayacağın bir şey yok.",
-  "Bugün senin günün!",
-  "Hayallerin peşinden git!",
+  "Bugün harika bir gün olabilir.",
   "Başarı, azimle gelir.",
-  "Kendine inan, yeter!"
+  "Her gün yeni bir başlangıçtır.",
+  "Sen istersen her şey olur.",
+  "İnanmak, başarmanın yarısıdır.",
+  "Küçük adımlar büyük değişim getirir.",
+  "Pozitif düşün, pozitif yaşa.",
+  "Harekete geç, mucizeler seni bekliyor.",
+  "Zorluklar, güçlenmen içindir.",
+  "Her şey sende başlar."
 ];
 
-function newMotive() {
-  const random = Math.floor(Math.random() * motives.length);
-  document.getElementById("motiveText").textContent = motives[random];
-}
+const rewards = [
+  "Bir Dahaki Gelişe 🎁",
+  "%20 İndirim",
+  "Şansını Dene",
+  "%10 İndirim",
+  "Milkshake",
+  "Sıcak Kahve",
+  "2 Bira + Cips (250₺)",
+  "3 Top Dondurma",
+  "Boş 😅",
+  "Bir Dahaki Gelişe 🎁"
+];
 
-function canSpinAgain() {
-  const key = "spinCount";
-  const data = localStorage.getItem(key);
-  const now = new Date();
-  const week = 1000 * 60 * 60 * 24 * 7;
+let angle = 0;
+let spinning = false;
+let drawWheel;
+let drawPointer;
+let spinCount = localStorage.getItem("spinCount") || 0;
 
-  if (!data) return true;
+function drawPrizeWheel() {
+  const numSlices = rewards.length;
+  const sliceAngle = (2 * Math.PI) / numSlices;
 
-  const parsed = JSON.parse(data);
-  const timeDiff = now.getTime() - new Date(parsed.time).getTime();
-  return parsed.count < 2 || timeDiff > week;
-}
-
-function updateSpinCount() {
-  const key = "spinCount";
-  const now = new Date();
-  const data = localStorage.getItem(key);
-
-  let count = 1;
-  if (data) {
-    const parsed = JSON.parse(data);
-    const timeDiff = now.getTime() - new Date(parsed.time).getTime();
-    if (timeDiff < 1000 * 60 * 60 * 24 * 7) {
-      count = parsed.count + 1;
-    }
+  for (let i = 0; i < numSlices; i++) {
+    ctx.beginPath();
+    ctx.fillStyle = `hsl(${i * 360 / numSlices}, 70%, 60%)`;
+    ctx.moveTo(250, 250);
+    ctx.arc(250, 250, 250, i * sliceAngle, (i + 1) * sliceAngle);
+    ctx.lineTo(250, 250);
+    ctx.fill();
+    ctx.fillStyle = "white";
+    ctx.font = "bold 16px sans-serif";
+    ctx.save();
+    ctx.translate(250, 250);
+    ctx.rotate((i + 0.5) * sliceAngle);
+    ctx.textAlign = "right";
+    ctx.fillText(rewards[i], 200, 10);
+    ctx.restore();
   }
-
-  localStorage.setItem(key, JSON.stringify({ count, time: now }));
 }
 
-document.getElementById("spinBtn").addEventListener("click", () => {
-  if (!canSpinAgain()) {
-    alert("Bu haftalık çevirme hakkınız doldu.");
+function showMotivation() {
+  if (spinCount >= 2) {
+    messageEl.innerText = "Çevirme hakkınız doldu!";
     return;
   }
+  const random = motives[Math.floor(Math.random() * motives.length)];
+  messageEl.innerText = `"${random}"`;
+}
 
-  const baseDeg = 360 * 5;
-  const randomDeg = Math.floor(Math.random() * 360);
-  const totalDeg = baseDeg + randomDeg;
+function spinWheel() {
+  if (spinning || spinCount >= 2) return;
 
-  wheel.style.transition = "transform 7s ease-out";
-  wheel.style.transform = `rotate(${totalDeg}deg)`;
+  spinning = true;
+  const randomIndex = Math.floor(Math.random() * rewards.length);
+  const targetAngle = (360 / rewards.length) * randomIndex;
+  const finalAngle = 360 * 7 + targetAngle; // 7 tur
+  let current = 0;
 
-  updateSpinCount();
+  const interval = setInterval(() => {
+    angle += 10;
+    angle %= 360;
+    draw();
+    current += 10;
 
-  setTimeout(() => {
-    const prizeIndex = Math.floor(((360 - (randomDeg % 360)) % 360) / (360 / prizes.length));
-    resultDiv.innerHTML = `Tebrikler! Kazandığınız: <strong>${prizes[prizeIndex]}</strong>`;
-  }, 7000);
-});
+    if (current >= finalAngle) {
+      clearInterval(interval);
+      spinning = false;
+      spinCount++;
+      localStorage.setItem("spinCount", spinCount);
+      const resultIndex = rewards.length - Math.floor((angle % 360) / (360 / rewards.length)) - 1;
+      const prize = rewards[resultIndex];
+      messageEl.innerText = `Tebrikler! Kazandığınız: ${prize}`;
+    }
+  }, 20);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(250, 250);
+  ctx.rotate(angle * Math.PI / 180);
+  ctx.translate(-250, -250);
+  drawPrizeWheel();
+  ctx.restore();
+}
+
+spinBtn.addEventListener("click", spinWheel);
+motiveBtn.addEventListener("click", showMotivation);
+
+draw();
