@@ -1,9 +1,60 @@
+
 body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
     text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-    background: #fffbea;
+    padding: 20px;
 }
-canvas {
-    border: 5px solid #000;
-    margin-top: 20px;
+
+#wheelCanvas {
+    border: 5px solid #333;
+    border-radius: 50%;
+    margin: 20px 0;
+}
+
+button {
+    background-color: orange;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: darkorange;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+}
+
+.left-logo {
+    float: left;
+    margin-left: 10%;
+}
+
+.right-logo {
+    float: right;
+    margin-right: 10%;
+}
+
+.wheel-container {
+    position: relative;
+    max-width: 500px;
+    margin: auto;
+    clear: both;
+}
+
+.insta-btn {
+    background-color: deeppink;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 8px;
 }

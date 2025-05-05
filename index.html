@@ -1,18 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pandomim Çarkı #1</title>
-    <link rel="stylesheet" href="style1.css">
+    <title>Pandomim Ödül Çarkı</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Bugün harika bir gün olabilir, yeter ki sen iste.</h1>
-    <button onclick="showMessage1()">Bir güzel söze daha ihtiyacım var</button>
-    <p id="message1"></p>
-    <canvas id="wheelCanvas1" width="400" height="400"></canvas>
-    <button onclick="spinWheel1()">Çevir</button>
+    <h1>Bugün harika bir gün olabilir</h1>
 
-    <script src="script1.js"></script>
+    <button id="motiveBtn">Bir güzel söz daha</button>
+    <p id="motiveText"></p>
+
+    <div class="wheel-container">
+        <img src="logo.png" class="logo left-logo" alt="Logo">
+        <canvas id="wheelCanvas" width="500" height="500"></canvas>
+        <img src="logo.png" class="logo right-logo" alt="Logo">
+    </div>
+
+    <button id="spinBtn">Çevir!</button>
+    <p id="resultText"></p>
+
+    <div class="info">
+        <p>
+            Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM’den ekran görüntüsü gönderin.</strong><br>
+            Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+        </p>
+        <a href="https://instagram.com" target="_blank" class="insta-btn">Instagram’a Git</a>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
