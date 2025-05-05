@@ -2,35 +2,34 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pandomim Ödül Çarkı</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pandomim Çark</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Bugün harika bir gün olabilir</h1>
+  <div class="wheel-container">
+    <img src="logo.png" class="left-logo" alt="logo">
+    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+    <img src="logo.png" class="right-logo" alt="logo">
+  </div>
 
-    <button id="motiveBtn">Bir güzel söz daha</button>
-    <p id="motiveText"></p>
-
-    <div class="wheel-container">
-        <img src="logo.png" class="logo left-logo" alt="Logo">
-        <canvas id="wheelCanvas" width="500" height="500"></canvas>
-        <img src="logo.png" class="logo right-logo" alt="Logo">
-    </div>
-
+  <div>
     <button id="spinBtn">Çevir!</button>
-    <p id="resultText"></p>
+    <p id="resultText" style="margin-top: 10px; font-weight: bold;"></p>
+  </div>
 
-    <div class="info">
-        <p>
-            Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve <strong>DM’den ekran görüntüsü gönderin.</strong><br>
-            Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
-        </p>
-        <a href="https://instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram’a Git</a>
-    </div>
+  <p id="motiveText">"Bugün harika bir gün olabilir, yeter ki sen iste."</p>
+  <button id="motiveBtn">Bir güzel söze daha ihtiyacım var</button>
 
-    <script src="script.js"></script>
-<div id="winMessage">🎉 Tebrikler! 🎉</div>
+  <p style="margin-top: 30px; font-size: 14px;">
+    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
+    <strong>DM'den ekran görüntüsü gönderin</strong>.
+  </p>
+  <a href="https://instagram.com/pandomimcafe" target="_blank" style="background: #e1306c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Instagram'a Git</a>
+
+  <div id="winMessage"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
