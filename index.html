@@ -2,16 +2,27 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pandomim Ödül Çarkı</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <p id="motiveText" class="motive-text">"Bir güzel söz seni bekliyor."</p>
-    <button onclick="showMotive()">Bir güzel söze daha ihtiyacım var</button>
+    <h1 class="motive-text" id="motiveText">"Bugün harika bir gün olabilir."</h1>
+    <button class="btn" onclick="showMotive()">Bir güzel söze daha ihtiyacım var</button>
+
+    <canvas id="wheel" width="400" height="400"></canvas>
+    <div class="pointer"></div>
+    <button class="btn" onclick="spin()">Çevir!</button>
+
+    <p class="info-text">
+      Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
+      <strong>DM'den ekran görüntüsü gönderin</strong>.
+    </p>
+    <a href="https://www.instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

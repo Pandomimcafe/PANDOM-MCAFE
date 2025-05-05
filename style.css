@@ -3,22 +3,54 @@ body {
   background: #fffbea;
   font-family: Arial, sans-serif;
   text-align: center;
-  padding: 50px;
+  margin: 0;
+  padding: 20px;
 }
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+button.btn {
+  margin: 15px;
+  padding: 10px 25px;
   font-size: 16px;
-  background: #000;
-  color: #fff;
+  background: orange;
+  color: black;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
+canvas {
+  margin-top: 20px;
+  border-radius: 50%;
+  border: 5px solid #222;
+}
+.pointer {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 30px solid red;
+  margin: 0 auto;
+  transform: translateY(-410px);
+}
 .motive-text {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: black;
-  text-shadow: 1px 1px 0 yellow;
+  margin-top: 20px;
+  color: #000;
+  text-shadow: 1px 1px yellow;
+}
+.info-text {
+  font-size: 14px;
+  margin-top: 25px;
+}
+.insta-btn {
+  background: #e1306c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
 }
