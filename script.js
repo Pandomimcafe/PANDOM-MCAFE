@@ -1,5 +1,31 @@
 
 
+// FingerprintJS ile kimlik oluşturma
+let fingerprint = null;
+let canSpin = true;
+
+const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+  .then(FingerprintJS => FingerprintJS.load())
+  .then(fp => fp.get())
+  .then(result => {
+      fingerprint = result.visitorId;
+
+      // Sheet.best'e sorgu gönder: bu fingerprint bugün zaten var mı?
+      const today = new Date().toISOString().split('T')[0];
+      fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3")
+        .then(res => res.json())
+        .then(data => {
+            const alreadyUsed = data.some(row => row.fingerprint === fingerprint && row.timestamp.startsWith(today));
+            if (alreadyUsed) {
+                document.querySelector("button").disabled = true;
+                document.querySelector("button").innerText = "Bugünlük hakkını kullandın 🛑";
+                canSpin = false;
+            }
+        });
+  });
+
+
+
 const motives = [
   "Bugün harika bir gün olabilir.",
   "Başarı, azimle gelir.",
@@ -102,13 +128,15 @@ drawWheel();
 
 
 function sendToSheetBest(index, reward) {
+    if (!canSpin) return;
     fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             timestamp: new Date().toISOString(),
             index: index,
-            reward: reward
+            reward: reward,
+            fingerprint: fingerprint
         })
     }).then(res => console.log("Sheet.best'e gönderildi:", res.status));
 }
