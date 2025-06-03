@@ -1,4 +1,3 @@
-
 const motives = [
   "Bugün harika bir gün olabilir.",
   "Başarı, azimle gelir.",
@@ -89,8 +88,22 @@ function spin() {
       spinData.count += 1;
       spinData.last = Date.now();
       localStorage.setItem("spinData", JSON.stringify(spinData));
-      const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
-      const result = rewards[index < 0 ? 0 : index];
+      
+      // Yeni ağırlıklı sistemle kazananı belirliyoruz
+      const weightedResults = [
+        0,         // Tatlı + Kahve (%5)
+        1, 1,      // 2 Soft içecek (%10)
+        2,         // Nargile (%5)
+        3,         // 2 Bira + Cips (%5)
+        4, 4, 4,   // %20 indirim (%15)
+        5, 5, 5,   // Milkshake (%15)
+        6, 6, 6,   // Yeniden dene (%15)
+        7,         // 3 top dondurma (%5)
+        8, 8, 8,   // Boş dilim 😄 (%15)
+        9, 9       // %10 indirim (%10)
+      ];
+      const resultIndex = weightedResults[Math.floor(Math.random() * weightedResults.length)];
+      const result = rewards[resultIndex];
       alert("Tebrikler! Kazandığınız: " + result);
     }
   }, 20);
