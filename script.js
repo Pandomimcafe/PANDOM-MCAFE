@@ -27,7 +27,7 @@ function showMotive() {
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 const rewards = [
-  "Tatlı + Türk Kahvesi", "2 Adet Soğuk İçecek", "Nargile Bedava",
+  "Tatlını al kahwen bizden ", "2 Adet Soft İçecek", "Nargile Bedava",
   "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
   "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
 ];
