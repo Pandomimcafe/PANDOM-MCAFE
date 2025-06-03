@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Çark İstatistikleri</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
+        h1 { color: #444; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; background: #fff; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Çark Kazanım İstatistikleri</h1>
+    <p>Son çevirme verileri anlık olarak görüntüleniyor.</p>
+    <table id="statsTable">
+        <thead>
+            <tr><th>Ödül</th><th>Kaç Defa Kazanıldı</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const rewards = [
+            "Tatlını al kahwen bizden", "2 Adet Soft İçecek", "Nargile Bedava",
+            "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
+            "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
+        ];
+        const counts = new Array(rewards.length).fill(0);
+
+        fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3")
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(entry => {
+                    const i = parseInt(entry.index);
+                    if (!isNaN(i) && rewards[i]) counts[i]++;
+                });
+                const tbody = document.querySelector("#statsTable tbody");
+                rewards.forEach((label, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td>{label}</td><td>{counts[index]}</td>`;
+                    tbody.appendChild(row);
+                });
+            });
+    </script>
+</body>
+</html>
