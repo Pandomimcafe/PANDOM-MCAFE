@@ -101,12 +101,14 @@ drawWheel();
 
 
 
-function sendToGoogleSheets(index, reward) {
-    fetch("https://script.google.com/macros/s/AKfycbz2QJqDqars2bjBeN9tdekT8_HVxca7myISC9fWMwvQq43jbhOvvm8dMO5PI6o7TWj51g/exec", {
+function sendToSheetBest(index, reward) {
+    fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
         method: "POST",
-        body: JSON.stringify({ index, reward }),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(res => console.log("Gönderildi:", res.status));
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            index: index,
+            reward: reward
+        })
+    }).then(res => console.log("Sheet.best'e gönderildi:", res.status));
 }
