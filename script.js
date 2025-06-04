@@ -127,16 +127,16 @@ drawWheel();
 
 
 
-function sendToSheetBest(index, reward) {
-    if (!canSpin) return;
-    fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            index: index,
-            reward: reward,
-            fingerprint: fingerprint
-        })
-    }).then(res => console.log("Sheet.best'e gönderildi:", res.status));
+fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    timestamp: new Date().toISOString(),
+    index: selectedIndex,
+    result: prizeText
+  })
+});
+then(res => console.log("Sheet.best'e gönderildi:", res.status));
 }
