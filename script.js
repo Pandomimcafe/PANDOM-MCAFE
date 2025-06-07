@@ -1,5 +1,3 @@
-
-
 // FingerprintJS ile kimlik oluşturma
 let fingerprint = null;
 let canSpin = true;
@@ -8,24 +6,26 @@ const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
   .then(FingerprintJS => FingerprintJS.load())
   .then(fp => fp.get())
   .then(result => {
-      fingerprint = result.visitorId;
+    fingerprint = result.visitorId;
 
-      // Sheet.best'e sorgu gönder: bu fingerprint bugün zaten var mı?
-      const today = new Date().toISOString().split('T')[0];
-      fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3")
-        .then(res => res.json())
-        .then(data => {
-            const alreadyUsed = data.some(row => row.fingerprint === fingerprint && row.timestamp.startsWith(today));
-            if (alreadyUsed) {
-                document.querySelector("button").disabled = true;
-                document.querySelector("button").innerText = "Bugünlük hakkını kullandın 🛑";
-                canSpin = false;
-            }
-        });
+    // Sheet.best'ten kullanıcı bugünden daha önce spin yaptı mı kontrol et
+    const today = new Date().toISOString().split('T')[0];
+    fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3")
+      .then(res => res.json())
+      .then(data => {
+        const alreadyUsed = data.some(row =>
+          row.fingerprint === fingerprint &&
+          row.timestamp.startsWith(today)
+        );
+        if (alreadyUsed) {
+          document.querySelector("button").disabled = true;
+          document.querySelector("button").innerText = "Bugünlük hakkını kullandın 🛑";
+          canSpin = false;
+        }
+      });
   });
 
-
-
+// Motive Edici Cümleler
 const motives = [
   "Bugün harika bir gün olabilir.",
   "Başarı, azimle gelir.",
@@ -61,6 +61,7 @@ const rewards = [
 let deg = 0;
 let spinning = false;
 
+// Yerel spin sayacı
 const spinData = JSON.parse(localStorage.getItem("spinData") || '{"count":0,"last":0}');
 const now = Date.now();
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
@@ -80,6 +81,7 @@ function drawWheel() {
     ctx.arc(200, 200, 200, i * arc, (i + 1) * arc);
     ctx.lineTo(200, 200);
     ctx.fill();
+
     ctx.save();
     ctx.translate(200, 200);
     ctx.rotate((i + 0.5) * arc);
@@ -91,14 +93,33 @@ function drawWheel() {
   }
 }
 
+function sendResultToSheet(index, prize) {
+  fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      fingerprint: fingerprint,
+      timestamp: new Date().toISOString(),
+      index: index,
+      result: prize
+    })
+  }).then(res => {
+    console.log("Sheet.best'e gönderildi:", res.status);
+  });
+}
+
 function spin() {
-  if (spinning || spinData.count >= 2) {
+  if (spinning || spinData.count >= 2 || !canSpin) {
     alert("Bu haftalık çevirme hakkınız doldu.");
     return;
   }
+
   spinning = true;
   const randAngle = 360 * 7 + Math.floor(Math.random() * 360);
   let current = 0;
+
   const interval = setInterval(() => {
     deg += 10;
     deg %= 360;
@@ -110,33 +131,22 @@ function spin() {
     drawWheel();
     ctx.restore();
     current += 10;
+
     if (current >= randAngle) {
       clearInterval(interval);
       spinning = false;
       spinData.count += 1;
       spinData.last = Date.now();
       localStorage.setItem("spinData", JSON.stringify(spinData));
+
       const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
-      const result = rewards[index < 0 ? 0 : index];
+      const correctedIndex = index < 0 ? 0 : index;
+      const result = rewards[correctedIndex];
+
       alert("Tebrikler! Kazandığınız: " + result);
+      sendResultToSheet(correctedIndex, result);
     }
   }, 20);
 }
 
 drawWheel();
-
-
-
-fetch("https://api.sheetbest.com/sheets/057a0181-a151-48c6-98f9-cbff6fdc4bf3", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    timestamp: new Date().toISOString(),
-    index: selectedIndex,
-    result: prizeText
-  })
-});
-then(res => console.log("Sheet.best'e gönderildi:", res.status));
-}
