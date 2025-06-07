@@ -117,3 +117,44 @@ function sendResultToSheet(index, prize) {
     console.log("Sheet.best'e gönderildi:", res.status);
   });
 }
+
+function spin() {
+  if (spinning || spinData.count >= 2 || !canSpin) {
+    alert("Bu haftalık çevirme hakkınız doldu.");
+    return;
+  }
+
+  spinning = true;
+  const randAngle = 360 * 7 + Math.floor(Math.random() * 360);
+  let current = 0;
+
+  const interval = setInterval(() => {
+    deg += 10;
+    deg %= 360;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(200, 200);
+    ctx.rotate(deg * Math.PI / 180);
+    ctx.translate(-200, -200);
+    drawWheel();
+    ctx.restore();
+    current += 10;
+
+    if (current >= randAngle) {
+      clearInterval(interval);
+      spinning = false;
+      spinData.count += 1;
+      spinData.last = Date.now();
+      localStorage.setItem("spinData", JSON.stringify(spinData));
+
+      const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
+      const correctedIndex = index < 0 ? 0 : index;
+      const result = rewards[correctedIndex];
+
+      alert("Tebrikler! Kazandığınız: " + result);
+      sendResultToSheet(correctedIndex, result);
+    }
+  }, 20);
+}
+
+drawWheel();
