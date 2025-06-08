@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Korunaklı Çark</title>
+  <script src="https://openfpcdn.io/fingerprintjs/v3"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; }
+    #wheel { width: 300px; height: 300px; border-radius: 50%; background: #eee; margin: 20px auto; line-height: 300px; font-size: 24px; border: 5px solid #ccc; }
+    button { padding: 15px 25px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>🎡 Pandomim Çark</h1>
+  <div id="wheel">Hazır</div>
+  <button id="spinBtn">Çevir!</button>
+
+  <script>
+    const sheetUrl = "https://api.sheetbest.com/sheets/0165fb81-28b3-4fe1-987f-c0f6dec937c2";
+    const rewards = [
+      "%10 İndirim", "%20 İndirim", "Nargile Bedava", "Tatlını al kahwen bizden",
+      "3 Top Dondurma", "Milkshake", "Boş", "Bir daha dene"
+    ];
+
+    let fingerprint = null;
+
+    // Kullanıcı çevirme hakkını cookie + fingerprint ile kontrol ediyoruz
+    function hasSpunToday() {
+      const cookie = document.cookie.split('; ').find(r => r.startsWith('spun='));
+      const spunDate = cookie ? cookie.split('=')[1] : null;
+      const today = new Date().toISOString().split('T')[0];
+      return spunDate === today;
+    }
+
+    function markAsSpunToday() {
+      const today = new Date().toISOString().split('T')[0];
+      document.cookie = `spun=${today}; path=/; max-age=86400`;
+    }
+
+    // FingerprintJS yükleniyor
+    FingerprintJS.load().then(fp => fp.get()).then(result => {
+      fingerprint = result.visitorId;
+
+      // Sheet.best verileri çekiliyor
+      fetch(sheetUrl)
+        .then(res => res.json())
+        .then(data => {
+          const today = new Date().toISOString().split('T')[0];
+          const alreadySpun = data.some(row => row.fingerprint === fingerprint && row.timestamp.startsWith(today));
+
+          if (alreadySpun || hasSpunToday()) {
+            document.getElementById("spinBtn").disabled = true;
+            document.getElementById("spinBtn").innerText = "Bugünlük hakkını kullandın 🛑";
+          }
+        });
+    });
+
+    document.getElementById("spinBtn").addEventListener("click", () => {
+      const index = Math.floor(Math.random() * rewards.length);
+      const prize = rewards[index];
+      document.getElementById("wheel").innerText = prize;
+
+      markAsSpunToday();
+
+      fetch(sheetUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fingerprint: fingerprint,
+          timestamp: new Date().toISOString(),
+          index: index,
+          result: prize,
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          language: navigator.language,
+          timezoneOffset: new Date().getTimezoneOffset(),
+          screenWidth: window.screen.width,
+          screenHeight: window.screen.height
+        })
+      }).then(res => console.log("Kaydedildi", res.status));
+
+      document.getElementById("spinBtn").disabled = true;
+      document.getElementById("spinBtn").innerText = "Bugünlük tamamlandı ✅";
+    });
+  </script>
+</body>
+</html>
