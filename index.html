@@ -62,7 +62,10 @@
   </style>
 </head>
 <body>
-  <!-- ... tüm içerik aynı kalıyor ... -->
+  <h1>Pandomim Cafe - Ödül Çarkı</h1>
+  <canvas id="wheel" width="400" height="400" style="border:1px solid #ccc;"></canvas>
+  <br>
+  <button onclick="spin()" id="spinButton">Çevir!</button>
 
   <!-- Google Form'a kayıt fonksiyonu -->
   <script>
@@ -70,9 +73,9 @@
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdfW5PhEGl6ZqPe_2sfEDfna4avosXflrHQOClzpskmrwW3Tw/formResponse";
 
       const formData = new URLSearchParams();
-      formData.append("entry.199924831", fingerprint);                    // FINGERPRINT
-      formData.append("entry.1632524683", new Date().toLocaleString());  // TARİH
-      formData.append("entry.1942271647", prize);                        // KAZANDIĞI HEDİYE
+      formData.append("entry.199924831", fingerprint);
+      formData.append("entry.1632524683", new Date().toLocaleString());
+      formData.append("entry.1942271647", prize);
 
       fetch(formUrl, {
         method: "POST",
@@ -85,10 +88,8 @@
     }
   </script>
 
-  <!-- Fingerprint kütüphanesi -->
+  <!-- FingerprintJS -->
   <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
-
-  <!-- Fingerprint yakalayıp değişkene atama -->
   <script>
     let fingerprint = "bilinmiyor";
     FingerprintJS.load().then(fp => {
@@ -99,7 +100,6 @@
     });
   </script>
 
-  <!-- Çark sonucu Google Form'a otomatik gönder -->
   <script>
     function checkAndSendPrize(prize) {
       const waitForFP = setInterval(() => {
@@ -111,10 +111,73 @@
     }
   </script>
 
-  <!-- Fal sistemi -->
-  <script src="fallar.js"></script>
-  <script src="storyCompliments.js"></script>
-  <script src="makeupCompliments.js"></script>
-  <script src="fal_fingerprint.js"></script>
+  <script>
+    const rewards = [
+      "Tatlını al kahwen bizden ", "2 Adet Soft İçecek", "Nargile Bedava",
+      "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
+      "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
+    ];
+
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    let deg = 0;
+    let spinning = false;
+
+    function drawWheel() {
+      const num = rewards.length;
+      const arc = (2 * Math.PI) / num;
+      for (let i = 0; i < num; i++) {
+        ctx.beginPath();
+        ctx.fillStyle = `hsl(${i * 36}, 80%, 60%)`;
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 200, i * arc, (i + 1) * arc);
+        ctx.lineTo(200, 200);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(200, 200);
+        ctx.rotate((i + 0.5) * arc);
+        ctx.fillStyle = "#000";
+        ctx.font = "13px Arial";
+        ctx.textAlign = "right";
+        ctx.fillText(rewards[i], 180, 5);
+        ctx.restore();
+      }
+    }
+
+    drawWheel();
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      const randAngle = 360 * 5 + Math.floor(Math.random() * 360);
+      let current = 0;
+
+      const interval = setInterval(() => {
+        deg += 10;
+        deg %= 360;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(200, 200);
+        ctx.rotate(deg * Math.PI / 180);
+        ctx.translate(-200, -200);
+        drawWheel();
+        ctx.restore();
+        current += 10;
+
+        if (current >= randAngle) {
+          clearInterval(interval);
+          spinning = false;
+
+          const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
+          const correctedIndex = index < 0 ? 0 : index;
+          const result = rewards[correctedIndex];
+
+          alert("Tebrikler! Kazandığınız: " + result);
+          checkAndSendPrize(result);
+        }
+      }, 20);
+    }
+  </script>
 </body>
 </html>
