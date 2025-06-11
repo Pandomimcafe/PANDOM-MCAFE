@@ -5,76 +5,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandomim Cafe - Fal & Çark & İltifat</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      background: linear-gradient(135deg, #e8dff5, #fef6f9);
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    h1 {
-      font-size: 30px;
-      margin-bottom: 25px;
-      color: #5c3d99;
-    }
-    button, input {
-      padding: 12px 18px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    button {
-      background-color: #5c3d99;
-      color: white;
-      cursor: pointer;
-    }
-    input {
-      border: 1px solid #ccc;
-    }
-    .hidden {
-      display: none;
-    }
-    #falText {
-      font-size: 20px;
-      font-weight: 500;
-      padding: 20px;
-      white-space: pre-line;
-      background-color: #ffffffd8;
-      border-radius: 12px;
-      display: inline-block;
-      margin: 20px auto 0;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    }
-    .message {
-      font-size: 18px;
-      font-style: italic;
-      margin-top: 20px;
-      white-space: pre-line;
-      color: #5c3d99;
-    }
-    .butonlar-container {
-      margin-top: 30px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Pandomim Cafe - Ödül Çarkı</h1>
-  <canvas id="wheel" width="400" height="400" style="border:1px solid #ccc;"></canvas>
-  <br>
-  <button onclick="spin()" id="spinButton">Çevir!</button>
+  <h2>"Bugün harika bir gün olabilir, yeter ki sen iste."</h2>
+  <button id="motiveBtn">Bir güzel söze daha ihtiyacım var</button>
 
+  <div class="wheel-container">
+    <img src="logo_resized.png" class="side-logo left-logo" alt="Logo">
+    <div class="pointer"></div>
+    <canvas id="wheel" width="500" height="500"></canvas>
+    <img src="logo_resized.png" class="side-logo right-logo" alt="Logo">
+  </div>
+
+  <button id="spinButton">Çevir!</button>
+
+  <p class="info-text">
+    Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
+    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+  </p>
+
+  <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
+
+  <script src="script.js"></script>
   <!-- Google Form'a kayıt fonksiyonu -->
   <script>
     function sendToGoogleForm(fingerprint, prize) {
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdfW5PhEGl6ZqPe_2sfEDfna4avosXflrHQOClzpskmrwW3Tw/formResponse";
 
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('tr-TR');
+      const formattedTime = now.toLocaleTimeString('tr-TR');
+
       const formData = new URLSearchParams();
       formData.append("entry.199924831", fingerprint);
-      formData.append("entry.1632524683", new Date().toLocaleString());
+      formData.append("entry.1632524683", `${formattedDate} ${formattedTime}`);
       formData.append("entry.1942271647", prize);
 
       fetch(formUrl, {
@@ -87,8 +52,6 @@
       });
     }
   </script>
-
-  <!-- FingerprintJS -->
   <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
   <script>
     let fingerprint = "bilinmiyor";
@@ -98,9 +61,7 @@
         window.fingerprintReady = true;
       });
     });
-  </script>
 
-  <script>
     function checkAndSendPrize(prize) {
       const waitForFP = setInterval(() => {
         if (window.fingerprintReady && fingerprint !== "bilinmiyor") {
@@ -108,75 +69,6 @@
           sendToGoogleForm(fingerprint, prize);
         }
       }, 100);
-    }
-  </script>
-
-  <script>
-    const rewards = [
-      "Tatlını al kahwen bizden ", "2 Adet Soft İçecek", "Nargile Bedava",
-      "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
-      "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
-    ];
-
-    const canvas = document.getElementById("wheel");
-    const ctx = canvas.getContext("2d");
-    let deg = 0;
-    let spinning = false;
-
-    function drawWheel() {
-      const num = rewards.length;
-      const arc = (2 * Math.PI) / num;
-      for (let i = 0; i < num; i++) {
-        ctx.beginPath();
-        ctx.fillStyle = `hsl(${i * 36}, 80%, 60%)`;
-        ctx.moveTo(200, 200);
-        ctx.arc(200, 200, 200, i * arc, (i + 1) * arc);
-        ctx.lineTo(200, 200);
-        ctx.fill();
-
-        ctx.save();
-        ctx.translate(200, 200);
-        ctx.rotate((i + 0.5) * arc);
-        ctx.fillStyle = "#000";
-        ctx.font = "13px Arial";
-        ctx.textAlign = "right";
-        ctx.fillText(rewards[i], 180, 5);
-        ctx.restore();
-      }
-    }
-
-    drawWheel();
-
-    function spin() {
-      if (spinning) return;
-      spinning = true;
-      const randAngle = 360 * 5 + Math.floor(Math.random() * 360);
-      let current = 0;
-
-      const interval = setInterval(() => {
-        deg += 10;
-        deg %= 360;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(200, 200);
-        ctx.rotate(deg * Math.PI / 180);
-        ctx.translate(-200, -200);
-        drawWheel();
-        ctx.restore();
-        current += 10;
-
-        if (current >= randAngle) {
-          clearInterval(interval);
-          spinning = false;
-
-          const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
-          const correctedIndex = index < 0 ? 0 : index;
-          const result = rewards[correctedIndex];
-
-          alert("Tebrikler! Kazandığınız: " + result);
-          checkAndSendPrize(result);
-        }
-      }, 20);
     }
   </script>
 </body>
