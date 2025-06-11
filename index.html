@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pandomim Cafe - Çark Sistemi</title>
+  <title>Pandomim Cafe - Fal & Çark & İltifat</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -77,7 +77,7 @@
   </style>
 </head>
 <body>
-  <h2>"Bugün harika bir gün olabilir, yeter ki sen iste."</h2>
+  <h2 id="motiveText">"Bugün harika bir gün olabilir, yeter ki sen iste."</h2>
 
   <div class="button-row">
     <button id="motiveBtn">Bir güzel söze daha ihtiyacım var</button>
@@ -111,8 +111,9 @@ let spinning = false;
 let alreadySpun = localStorage.getItem("alreadySpun") === "true";
 
 function drawWheel() {
-  const arc = (2 * Math.PI) / rewards.length;
-  for (let i = 0; i < rewards.length; i++) {
+  const num = rewards.length;
+  const arc = (2 * Math.PI) / num;
+  for (let i = 0; i < num; i++) {
     ctx.beginPath();
     ctx.fillStyle = `hsl(${i * 36}, 80%, 60%)`;
     ctx.moveTo(250, 250);
@@ -130,6 +131,7 @@ function drawWheel() {
     ctx.restore();
   }
 }
+
 drawWheel();
 
 function spin() {
@@ -178,6 +180,20 @@ function spin() {
     }
   }, 20);
 }
+
+const motiveCümleler = [
+  "Her gün yeni bir başlangıçtır.",
+  "Bugün seni mutlu eden şeyleri hatırla.",
+  "Gülümsemeyi unutma, çünkü biri senin gülümsemene ihtiyaç duyuyor.",
+  "Sen olduğun halinle yeterince iyisin.",
+  "En karanlık geceden sonra güneş doğar."
+];
+
+let motiveIndex = 0;
+document.getElementById("motiveBtn").addEventListener("click", () => {
+  motiveIndex = (motiveIndex + 1) % motiveCümleler.length;
+  document.getElementById("motiveText").textContent = '"' + motiveCümleler[motiveIndex] + '"';
+});
 </script>
 </body>
 </html>
