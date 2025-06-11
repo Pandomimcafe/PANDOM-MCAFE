@@ -152,6 +152,7 @@ function spin() {
       const result = rewards[correctedIndex];
 
       alert("Tebrikler! Kazandığınız: " + result);
+      checkAndSendPrize(result);
       sendResultToSheet(correctedIndex, result);
     }
   }, 20);
