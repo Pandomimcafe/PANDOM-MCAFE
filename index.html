@@ -6,6 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandomim Cafe - Fal & Çark & İltifat</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 40px solid #5c3d99;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    .wheel-container {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <h2>"Bugün harika bir gün olabilir, yeter ki sen iste."</h2>
@@ -18,7 +37,7 @@
     <img src="logo_resized.png" class="side-logo right-logo" alt="Logo">
   </div>
 
-  <button id="spinButton">Çevir!</button>
+  <button id="spinButton" onclick="spin()">Çevir!</button>
 
   <p class="info-text">
     Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
@@ -27,12 +46,10 @@
 
   <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
 
-  <script src="script.js"></script>
   <!-- Google Form'a kayıt fonksiyonu -->
   <script>
     function sendToGoogleForm(fingerprint, prize) {
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdfW5PhEGl6ZqPe_2sfEDfna4avosXflrHQOClzpskmrwW3Tw/formResponse";
-
       const now = new Date();
       const formattedDate = now.toLocaleDateString('tr-TR');
       const formattedTime = now.toLocaleTimeString('tr-TR');
@@ -52,6 +69,7 @@
       });
     }
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
   <script>
     let fingerprint = "bilinmiyor";
@@ -69,6 +87,73 @@
           sendToGoogleForm(fingerprint, prize);
         }
       }, 100);
+    }
+
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const rewards = [
+      "Tatlını al kahwen bizden ", "2 Adet Soft İçecek", "Nargile Bedava",
+      "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
+      "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
+    ];
+
+    let deg = 0;
+    let spinning = false;
+
+    function drawWheel() {
+      const num = rewards.length;
+      const arc = (2 * Math.PI) / num;
+      for (let i = 0; i < num; i++) {
+        ctx.beginPath();
+        ctx.fillStyle = `hsl(${i * 36}, 80%, 60%)`;
+        ctx.moveTo(250, 250);
+        ctx.arc(250, 250, 250, i * arc, (i + 1) * arc);
+        ctx.lineTo(250, 250);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(250, 250);
+        ctx.rotate((i + 0.5) * arc);
+        ctx.fillStyle = "#000";
+        ctx.font = "13px Arial";
+        ctx.textAlign = "right";
+        ctx.fillText(rewards[i], 230, 5);
+        ctx.restore();
+      }
+    }
+
+    drawWheel();
+
+    function spin() {
+      if (spinning) return;
+      spinning = true;
+      const randAngle = 360 * 7 + Math.floor(Math.random() * 360);
+      let current = 0;
+
+      const interval = setInterval(() => {
+        deg += 10;
+        deg %= 360;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(250, 250);
+        ctx.rotate(deg * Math.PI / 180);
+        ctx.translate(-250, -250);
+        drawWheel();
+        ctx.restore();
+        current += 10;
+
+        if (current >= randAngle) {
+          clearInterval(interval);
+          spinning = false;
+
+          const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
+          const correctedIndex = index < 0 ? 0 : index;
+          const result = rewards[correctedIndex];
+
+          alert("Tebrikler! Kazandığınız: " + result);
+          checkAndSendPrize(result);
+        }
+      }, 20);
     }
   </script>
 </body>
