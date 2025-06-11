@@ -1,36 +1,120 @@
-
+<!-- Pandomim Cafe - Fal & Çark & İltifat Sistemi -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pandomim Ödül Çarkı</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pandomim Cafe - Fal & Çark & İltifat</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #e8dff5, #fef6f9);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      font-size: 30px;
+      margin-bottom: 25px;
+      color: #5c3d99;
+    }
+    button, input {
+      padding: 12px 18px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      background-color: #5c3d99;
+      color: white;
+      cursor: pointer;
+    }
+    input {
+      border: 1px solid #ccc;
+    }
+    .hidden {
+      display: none;
+    }
+    #falText {
+      font-size: 20px;
+      font-weight: 500;
+      padding: 20px;
+      white-space: pre-line;
+      background-color: #ffffffd8;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 20px auto 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .message {
+      font-size: 18px;
+      font-style: italic;
+      margin-top: 20px;
+      white-space: pre-line;
+      color: #5c3d99;
+    }
+    .butonlar-container {
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1 class="motive-text" id="motiveText">"Bugün harika bir gün olabilir."</h1>
-    <button class="btn" onclick="showMotive()">Bir güzel söze daha ihtiyacım var</button>
+  <!-- ... tüm içerik aynı kalıyor ... -->
 
-    <div class="logo-row">
-      <img src="logo.png" alt="logo" class="side-logo" />
-      <div style="position: relative;">
-        <canvas id="wheel" width="400" height="400"></canvas>
-        <div class="pointer"></div>
-        <img src="logo.png" alt="logo" class="top-logo" />
-      </div>
-      <img src="logo.png" alt="logo" class="side-logo" />
-    </div>
+  <!-- Google Form'a kayıt fonksiyonu -->
+  <script>
+    function sendToGoogleForm(fingerprint, prize) {
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdfW5PhEGl6ZqPe_2sfEDfna4avosXflrHQOClzpskmrwW3Tw/formResponse";
 
-    <button class="btn" onclick="spin()">Çevir!</button>
+      const formData = new URLSearchParams();
+      formData.append("entry.199924831", fingerprint);                    // FINGERPRINT
+      formData.append("entry.1632524683", new Date().toLocaleString());  // TARİH
+      formData.append("entry.1942271647", prize);                        // KAZANDIĞI HEDİYE
 
-    <p class="info-text">
-      Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-      <strong>DM'den ekran görüntüsü gönderin</strong>.
-    </p>
-    <a href="https://www.instagram.com/pandomimcafe" target="_blank" class="insta-btn">Instagram'a Git</a>
-  </div>
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData
+      });
+    }
+  </script>
 
-  <script src="script.js"></script>
+  <!-- Fingerprint kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+
+  <!-- Fingerprint yakalayıp değişkene atama -->
+  <script>
+    let fingerprint = "bilinmiyor";
+    FingerprintJS.load().then(fp => {
+      fp.get().then(result => {
+        fingerprint = result.visitorId;
+        window.fingerprintReady = true;
+      });
+    });
+  </script>
+
+  <!-- Çark sonucu Google Form'a otomatik gönder -->
+  <script>
+    function checkAndSendPrize(prize) {
+      const waitForFP = setInterval(() => {
+        if (window.fingerprintReady && fingerprint !== "bilinmiyor") {
+          clearInterval(waitForFP);
+          sendToGoogleForm(fingerprint, prize);
+        }
+      }, 100);
+    }
+  </script>
+
+  <!-- Fal sistemi -->
+  <script src="fallar.js"></script>
+  <script src="storyCompliments.js"></script>
+  <script src="makeupCompliments.js"></script>
+  <script src="fal_fingerprint.js"></script>
 </body>
 </html>
