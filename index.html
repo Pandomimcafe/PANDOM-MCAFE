@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pandomim Cafe - Fal & Çark & İltifat</title>
+  <title>Pandomim Cafe - Çark Sistemi</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -41,12 +41,8 @@
       top: 50%;
       transform: translateY(-50%);
     }
-    .left-logo {
-      left: -60px;
-    }
-    .right-logo {
-      right: -60px;
-    }
+    .left-logo { left: -60px; }
+    .right-logo { right: -60px; }
     .button-row {
       display: flex;
       justify-content: center;
@@ -97,7 +93,7 @@
 
   <p class="info-text">
     Tüm hediyeler için <strong>Instagram hesabımızı takip edin</strong> ve
-    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>haftada 2 kez</strong> çark çevirebilir.
+    <strong>DM'den ekran görüntüsü gönderin</strong>. Her cihaz yalnızca <strong>bir kez</strong> çark çevirebilir.
   </p>
 
   <a href="https://instagram.com/pandomimcafe" class="insta-btn" target="_blank">Instagram'a Git</a>
@@ -107,16 +103,16 @@ const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 const rewards = [
   "Tatlını al kahwen bizden ", "2 Adet Soft İçecek", "Nargile Bedava",
-  "2 Bira + 1 Cips (250₺)", "%20 İndirim", "Milkshake / Soğuk Kahve",
-  "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "%10 İndirim"
+  "2 Bira + 1 Cips (250₺)", "100 TL Nakit", "Milkshake / Soğuk Kahve",
+  "Şansını Bir Daha Dene", "3 Top Dondurma", "Boş Dilim 😄", "50 TL Nakit"
 ];
 let deg = 0;
 let spinning = false;
+let alreadySpun = localStorage.getItem("alreadySpun") === "true";
 
 function drawWheel() {
-  const num = rewards.length;
-  const arc = (2 * Math.PI) / num;
-  for (let i = 0; i < num; i++) {
+  const arc = (2 * Math.PI) / rewards.length;
+  for (let i = 0; i < rewards.length; i++) {
     ctx.beginPath();
     ctx.fillStyle = `hsl(${i * 36}, 80%, 60%)`;
     ctx.moveTo(250, 250);
@@ -134,12 +130,32 @@ function drawWheel() {
     ctx.restore();
   }
 }
-
 drawWheel();
 
 function spin() {
-  if (spinning) return;
+  if (spinning || alreadySpun) {
+    alert("Bu cihazdan sadece bir kez çark çevrilebilir.");
+    return;
+  }
   spinning = true;
+  alreadySpun = true;
+  localStorage.setItem("alreadySpun", "true");
+
+  const weightedRewards = [
+    ...Array(8).fill("Tatlını al kahwen bizden "),
+    ...Array(8).fill("2 Adet Soft İçecek"),
+    ...Array(7).fill("Şansını Bir Daha Dene"),
+    ...Array(5).fill("3 Top Dondurma"),
+    ...Array(2).fill("Nargile Bedava"),
+    ...Array(2).fill("2 Bira + 1 Cips (250₺)"),
+    ...Array(2).fill("Milkshake / Soğuk Kahve"),
+    ...Array(1).fill("100 TL Nakit"),
+    ...Array(2).fill("50 TL Nakit"),
+    ...Array(25).fill("Boş Dilim 😄")
+  ];
+
+  const selectedPrize = weightedRewards[Math.floor(Math.random() * weightedRewards.length)];
+
   const randAngle = 360 * 7 + Math.floor(Math.random() * 360);
   let current = 0;
 
@@ -158,10 +174,7 @@ function spin() {
     if (current >= randAngle) {
       clearInterval(interval);
       spinning = false;
-      const index = rewards.length - Math.floor(((deg % 360) / (360 / rewards.length))) - 1;
-      const correctedIndex = index < 0 ? 0 : index;
-      const result = rewards[correctedIndex];
-      alert("Tebrikler! Kazandığınız: " + result);
+      alert("Tebrikler! Kazandığınız: " + selectedPrize);
     }
   }, 20);
 }
